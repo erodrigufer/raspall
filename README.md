@@ -1,0 +1,2 @@
+# raspall
+Centralized news scraper
