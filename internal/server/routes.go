@@ -6,6 +6,8 @@ import (
 	"log"
 	"net/http"
 	"runtime/debug"
+
+	"github.com/erodrigufer/raspall/internal/scraper"
 )
 
 func (app *Application) routes() http.Handler {
@@ -18,7 +20,8 @@ func (app *Application) routes() http.Handler {
 
 func news() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		SendJSONResponse(w, 200, "news")
+		articles := scraper.Scrape(r.Context())
+		SendJSONResponse(w, 200, articles)
 	}
 }
 
