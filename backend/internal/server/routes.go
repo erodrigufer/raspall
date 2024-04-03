@@ -33,7 +33,7 @@ func (app *Application) news() http.HandlerFunc {
 		switch site {
 		case "nacio":
 			{
-				articles := scraper.ScrapeNacioDigital(r.Context(), app.InfoLog, app.ErrorLog)
+				articles := scraper.GetNacioArticles(r.Context(), app.InfoLog, app.ErrorLog)
 				SendJSONResponse(w, 200, articles)
 
 			}

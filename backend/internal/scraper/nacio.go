@@ -7,7 +7,7 @@ import (
 	"github.com/gocolly/colly"
 )
 
-func ScrapeNacioDigital(ctx context.Context, infoLog, errorLog *log.Logger) []Article {
+func scrapeNacioDigital(ctx context.Context, infoLog, errorLog *log.Logger) []Article {
 
 	f := func(art *[]Article) colly.HTMLCallback {
 		return func(element *colly.HTMLElement) {
@@ -38,5 +38,13 @@ func ScrapeNacioDigital(ctx context.Context, infoLog, errorLog *log.Logger) []Ar
 
 	articles := scrape(ctx, infoLog, errorLog, q)
 
+	return articles
+}
+
+func GetNacioArticles(ctx context.Context, infoLog, errorLog *log.Logger) []Article {
+	articles := scrapeNacioDigital(ctx, infoLog, errorLog)
+
+	undesiredTopics := []string{"eleccions", "PSC", "Puigdemont", "Salvador Illa", "ERC", "amnistia"}
+	articles = filterByTopics(articles, undesiredTopics)
 	return articles
 }
