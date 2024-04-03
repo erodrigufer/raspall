@@ -2,47 +2,38 @@ package scraper
 
 import (
 	"context"
-	"fmt"
+	"log"
 
 	"github.com/gocolly/colly"
 )
 
-// TODO: use type.
 type Article struct {
-	Title string
-	URL   string
+	Title   string
+	URL     string
+	Paywall bool
 }
 
-func Scrape(ctx context.Context) []Article {
+type collectorQuery struct {
+	url             string
+	querySelector   string
+	queryCallbackFn func(*[]Article) colly.HTMLCallback
+}
+
+func scrape(_ context.Context, infoLog, errorLog *log.Logger, q collectorQuery) []Article {
+	// TODO: Handle a cancellation of the context.
+
 	collector := colly.NewCollector()
 
-	url := "https://www.naciodigital.cat/"
-
 	collector.OnRequest(func(r *colly.Request) {
-		// TODO: remove fmt.Print functions.
-		// print the url of that request
-		fmt.Println("Visiting", r.URL)
+		infoLog.Printf("Visiting: %s", r.URL)
 	})
-	collector.OnResponse(func(r *colly.Response) {
-		fmt.Println("Got a response from", r.Request.URL)
+	collector.OnError(func(r *colly.Response, err error) {
+		errorLog.Printf("An error occurred while scraping %s: %s", r.Request.URL, err)
 	})
-	collector.OnError(func(r *colly.Response, e error) {
-		fmt.Println("Blimey, an error occurred!:", e)
-	})
-	// n := 1
-	articles := make([]Article, 0, 200)
-	collector.OnHTML("h2.titolnoticiallistat", func(element *colly.HTMLElement) {
-		title := element.ChildText("a")
-		url := element.ChildAttr("a", "href")
-		if title != "" && url != "" {
-			article := Article{Title: title, URL: url}
-			articles = append(articles, article)
-		}
 
-		// fmt.Printf("[%d].\t %s | %s \n", n, title, url)
-		// n = n + 1
-	})
-	collector.Visit(url)
+	articles := make([]Article, 0, 200)
+	collector.OnHTML(q.querySelector, q.queryCallbackFn(&articles))
+	collector.Visit(q.url)
 
 	return articles
 }
