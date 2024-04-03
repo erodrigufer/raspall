@@ -7,13 +7,13 @@ import (
 	"github.com/gocolly/colly"
 )
 
-func ScrapeZeit(ctx context.Context, infoLog, errorLog *log.Logger) []Article {
+func scrapeZeit(ctx context.Context, infoLog, errorLog *log.Logger) []Article {
 
 	f := func(art *[]Article) colly.HTMLCallback {
 		return func(element *colly.HTMLElement) {
 			title := element.ChildText("span.zon-teaser__title")
 			url := element.ChildAttr("a", "href")
-			// Check if Z+ symbol is present.
+			// Check if Z+ symbol is present, i.e. if it is a paywall article.
 			paywallStr := element.ChildAttr("svg.zplus-logo", "aria-label")
 			var paywall bool
 			if paywallStr != "" {
@@ -35,5 +35,11 @@ func ScrapeZeit(ctx context.Context, infoLog, errorLog *log.Logger) []Article {
 
 	articles := scrape(ctx, infoLog, errorLog, q)
 
+	return articles
+}
+
+func GetZeitArticles(ctx context.Context, infoLog, errorLog *log.Logger, removePaywall bool) []Article {
+	articles := scrapeZeit(ctx, infoLog, errorLog)
+	articles = filterByPaywall(articles, removePaywall)
 	return articles
 }
