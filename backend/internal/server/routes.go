@@ -8,7 +8,7 @@ import (
 
 func (app *Application) routes() http.Handler {
 	mux := http.NewServeMux()
-	mux.Handle("GET /v1/news", app.news())
+	mux.Handle("GET /v1/news/{site...}", app.news())
 	mux.Handle("GET /v1/health", app.health())
 
 	return mux
@@ -16,8 +16,24 @@ func (app *Application) routes() http.Handler {
 
 func (app *Application) news() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		articles := scraper.ScrapeZeit(r.Context(), app.InfoLog, app.ErrorLog)
-		SendJSONResponse(w, 200, articles)
+		site := r.PathValue("site")
+		app.InfoLog.Printf("path value: %s", site)
+
+		switch site {
+		case "nacio":
+			{
+				articles := scraper.ScrapeNacioDigital(r.Context(), app.InfoLog, app.ErrorLog)
+				SendJSONResponse(w, 200, articles)
+
+			}
+		case "zeit":
+			{
+				articles := scraper.ScrapeZeit(r.Context(), app.InfoLog, app.ErrorLog)
+				SendJSONResponse(w, 200, articles)
+			}
+		default:
+			SendJSONResponse(w, 200, "all news sites")
+		}
 	}
 }
 
