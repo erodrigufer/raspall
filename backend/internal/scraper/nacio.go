@@ -11,19 +11,28 @@ func ScrapeNacioDigital(ctx context.Context, infoLog, errorLog *log.Logger) []Ar
 
 	f := func(art *[]Article) colly.HTMLCallback {
 		return func(element *colly.HTMLElement) {
-			title := element.ChildText("a")
+			title := element.ChildText("h2 > a")
 			url := element.ChildAttr("a", "href")
+			topic := element.ChildText("div.avantitol > span > a")
+			// Sometimes the topic is not an 'a' element, then re-check
+			// if a topic can be found with another query.
+			if topic == "" {
+				topic = element.ChildText("div.avantitol > span")
+			}
+			topics := make([]string, 0, 3)
 			if title != "" && url != "" {
-				article := Article{Title: title, URL: url}
+				if topic != "" {
+					topics = append(topics, topic)
+				}
+				article := Article{Title: title, URL: url, Topics: topics}
 				*art = append(*art, article)
 			}
-
 		}
 	}
 
 	q := collectorQuery{
 		url:             "https://www.naciodigital.cat/",
-		querySelector:   "h2.titolnoticiallistat",
+		querySelector:   "div.noticia",
 		queryCallbackFn: f,
 	}
 

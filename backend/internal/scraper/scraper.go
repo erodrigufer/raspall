@@ -9,6 +9,7 @@ import (
 
 type Article struct {
 	Title   string
+	Topics  []string
 	URL     string
 	Paywall bool
 }
