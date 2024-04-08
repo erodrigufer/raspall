@@ -12,7 +12,7 @@ func scrapeNacioDigital(ctx context.Context, infoLog, errorLog *log.Logger) []Ar
 	f := func(art *[]Article) colly.HTMLCallback {
 		return func(element *colly.HTMLElement) {
 			title := element.ChildText("h2 > a")
-			url := element.ChildAttr("a", "href")
+			url := element.ChildAttr("h2.titolnoticiallistat > a", "href")
 			topic := element.ChildText("div.avantitol > span > a")
 			// Sometimes the topic is not an 'a' element, then re-check
 			// if a topic can be found with another query.
@@ -44,7 +44,7 @@ func scrapeNacioDigital(ctx context.Context, infoLog, errorLog *log.Logger) []Ar
 func GetNacioArticles(ctx context.Context, infoLog, errorLog *log.Logger) []Article {
 	articles := scrapeNacioDigital(ctx, infoLog, errorLog)
 
-	undesiredTopics := []string{"eleccions", "PSC", "Puigdemont", "Salvador Illa", "ERC", "amnistia"}
+	undesiredTopics := []string{"eleccions", "PSC", "Puigdemont", "Salvador Illa", "ERC", "amnistia", "Aragonès"}
 	articles = filterByTopics(articles, undesiredTopics)
 	return articles
 }
