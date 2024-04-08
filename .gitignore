@@ -20,7 +20,9 @@
 # Go workspace file
 go.work
 
-# Mac OS
+# Mac OS.
 .DS_Store
 
+# Exclude binaries.
 **/tmp
+**/build
