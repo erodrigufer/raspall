@@ -30,23 +30,48 @@ func (app *Application) news() http.HandlerFunc {
 			{
 				articles := scraper.GetNacioArticles(r.Context(), app.InfoLog, app.ErrorLog)
 				articles = limit(options.limit, articles)
-				SendJSONResponse(w, 200, articles)
-
+				unreadArticles, err := getUndeliveredObjects(articles, app.cache)
+				if err != nil {
+					HandleServerError(w, err, app.ErrorLog)
+					return
+				}
+				SendJSONResponse(w, 200, unreadArticles)
+				return
 			}
 		case "zeit":
 			{
 				articles := scraper.GetZeitArticles(r.Context(), app.InfoLog, app.ErrorLog, options.removePaywall)
 				articles = limit(options.limit, articles)
-				SendJSONResponse(w, 200, articles)
+				unreadArticles, err := getUndeliveredObjects(articles, app.cache)
+				if err != nil {
+					HandleServerError(w, err, app.ErrorLog)
+					return
+				}
+				SendJSONResponse(w, 200, unreadArticles)
+				return
 			}
 		case "hn":
 			{
 				articles := scraper.GetHackerNewsArticles(r.Context(), app.InfoLog, app.ErrorLog)
 				articles = limit(options.limit, articles)
-				SendJSONResponse(w, 200, articles)
+				unreadArticles, err := getUndeliveredObjects(articles, app.cache)
+				if err != nil {
+					HandleServerError(w, err, app.ErrorLog)
+					return
+				}
+				SendJSONResponse(w, 200, unreadArticles)
+				return
+			}
+		case "":
+			{
+				SendJSONResponse(w, 200, "all news sites")
+				return
 			}
 		default:
-			SendJSONResponse(w, 200, "all news sites")
+			{
+				HandleNotFoundError(w)
+				return
+			}
 		}
 	}
 }
@@ -61,16 +86,4 @@ func (app *Application) health() http.HandlerFunc {
 			HandleServerError(w, err, app.ErrorLog)
 		}
 	}
-}
-
-func limit[O any](limit int, objects []O) []O {
-	if limit < 1 {
-		return objects
-	}
-
-	if len(objects) >= limit {
-		return objects[:limit]
-	}
-
-	return objects
 }
