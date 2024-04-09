@@ -2,6 +2,8 @@ package scraper
 
 import (
 	"context"
+	"crypto/sha1"
+	"fmt"
 	"log"
 
 	colly "github.com/gocolly/colly/v2"
@@ -37,4 +39,20 @@ func scrape(_ context.Context, infoLog, errorLog *log.Logger, q collectorQuery) 
 	collector.Visit(q.url)
 
 	return articles
+}
+
+func (a Article) CreateHash() (string, error) {
+	if a.Title == "" || a.URL == "" {
+		return "", fmt.Errorf("error generating hash for article, either title or url are missing")
+	}
+
+	articleInformation := fmt.Sprintf("%s%s", a.Title, a.URL)
+	h := sha1.New()
+	h.Write([]byte(articleInformation))
+	hashOutput := h.Sum(nil)
+
+	output := fmt.Sprintf("%x\n", hashOutput)
+
+	output = output[:20]
+	return output, nil
 }
