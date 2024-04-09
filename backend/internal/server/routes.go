@@ -39,6 +39,12 @@ func (app *Application) news() http.HandlerFunc {
 				articles = limit(options.limit, articles)
 				SendJSONResponse(w, 200, articles)
 			}
+		case "hn":
+			{
+				articles := scraper.GetHackerNewsArticles(r.Context(), app.InfoLog, app.ErrorLog)
+				articles = limit(options.limit, articles)
+				SendJSONResponse(w, 200, articles)
+			}
 		default:
 			SendJSONResponse(w, 200, "all news sites")
 		}
