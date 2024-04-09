@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/erodrigufer/raspall/internal/scraper"
+	"github.com/patrickmn/go-cache"
 )
 
 func (app *Application) routes() http.Handler {
@@ -43,7 +44,15 @@ func (app *Application) news() http.HandlerFunc {
 			{
 				articles := scraper.GetHackerNewsArticles(r.Context(), app.InfoLog, app.ErrorLog)
 				articles = limit(options.limit, articles)
-				SendJSONResponse(w, 200, articles)
+				unreadArticles := make([]scraper.Article, 0, 20)
+				for _, article := range articles {
+					// TODO: check error
+					delivered, _ := checkDeliveryStatus(article, app.cache)
+					if !delivered {
+						unreadArticles = append(unreadArticles, article)
+					}
+				}
+				SendJSONResponse(w, 200, unreadArticles)
 			}
 		default:
 			SendJSONResponse(w, 200, "all news sites")
@@ -73,4 +82,24 @@ func limit[O any](limit int, objects []O) []O {
 	}
 
 	return objects
+}
+
+func checkDeliveryStatus(element Deliverable, c *cache.Cache) (bool, error) {
+	hashId, err := element.CreateHash()
+	if err != nil {
+		return false, fmt.Errorf("unable to create a hash id: %w", err)
+	}
+
+	_, found := c.Get(hashId)
+	if found {
+		return true, nil
+	}
+
+	c.Set(hashId, true, cache.DefaultExpiration)
+	return false, nil
+
+}
+
+type Deliverable interface {
+	CreateHash() (string, error)
 }

@@ -7,6 +7,8 @@ import (
 	"os"
 	"sync"
 	"time"
+
+	"github.com/patrickmn/go-cache"
 )
 
 type Application struct {
@@ -15,6 +17,10 @@ type Application struct {
 	ErrorLog *log.Logger
 	// InfoLog informative server logger.
 	InfoLog *log.Logger
+	// cache is a key-value store to manage
+	// the news that have already been delivered
+	// to the user.
+	cache *cache.Cache
 }
 
 func NewAPI(ctx context.Context) *Application {
@@ -35,6 +41,9 @@ func NewAPI(ctx context.Context) *Application {
 		// accepting the connection.
 		WriteTimeout: 30 * time.Second,
 	}
+
+	c := cache.New(1*time.Minute, 1*time.Minute)
+	app.cache = c
 
 	return app
 }
