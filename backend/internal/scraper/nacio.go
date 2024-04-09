@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 
-	"github.com/gocolly/colly"
+	colly "github.com/gocolly/colly/v2"
 )
 
 func scrapeNacioDigital(ctx context.Context, infoLog, errorLog *log.Logger) []Article {
