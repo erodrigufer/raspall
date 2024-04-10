@@ -12,13 +12,9 @@ func scrapeNacioDigital(ctx context.Context, infoLog, errorLog *log.Logger) []Ar
 	f := func(art *[]Article) colly.HTMLCallback {
 		return func(element *colly.HTMLElement) {
 			title := element.ChildText("h2 > a")
-			url := element.ChildAttr("h2.titolnoticiallistat > a", "href")
-			topic := element.ChildText("div.avantitol > span > a")
-			// Sometimes the topic is not an 'a' element, then re-check
-			// if a topic can be found with another query.
-			if topic == "" {
-				topic = element.ChildText("div.avantitol > span")
-			}
+			url := element.ChildAttr("h2 > a", "href")
+			topic := element.ChildText("div.m-category")
+
 			topics := make([]string, 0, 3)
 			if title != "" && url != "" {
 				if topic != "" {
@@ -32,7 +28,7 @@ func scrapeNacioDigital(ctx context.Context, infoLog, errorLog *log.Logger) []Ar
 
 	q := collectorQuery{
 		url:             "https://www.naciodigital.cat/",
-		querySelector:   "div.noticia",
+		querySelector:   "article",
 		queryCallbackFn: f,
 	}
 
