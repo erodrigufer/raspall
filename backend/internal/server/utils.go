@@ -6,7 +6,17 @@ import (
 	"log"
 	"net/http"
 	"runtime/debug"
+	"strconv"
 )
+
+// ErrorMessageBody the standard data type used to deliver error messages.
+type ErrorMessageBody struct {
+	Error struct {
+		Code    string `json:"code"`
+		Message string `json:"message"`
+		Details string `json:"details"`
+	} `json:"error"`
+}
 
 // SendJSONResponse transforms a value of any type into JSON and sends the
 // JSON data as an HTTP response.
@@ -30,7 +40,34 @@ func SendJSONResponse(w http.ResponseWriter, statusCode int, v any) error {
 // then sends a generic 500 Internal Server Error response to the client.
 func HandleServerError(w http.ResponseWriter, err error, errorLogger *log.Logger) {
 	trace := fmt.Sprintf("%s\n%s", err.Error(), debug.Stack())
-
 	_ = errorLogger.Output(2, trace)
-	http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+
+	sendError(w, http.StatusInternalServerError)
+}
+
+func HandleNotFoundError(w http.ResponseWriter) {
+	sendError(w, http.StatusNotFound)
+}
+
+func sendError(w http.ResponseWriter, statusCode int) {
+	errorMessageBody := NewErrorMessageBody(strconv.Itoa(statusCode), http.StatusText(statusCode), "")
+	SendJSONResponse(w, statusCode, errorMessageBody)
+}
+
+// NewErrorMessageBody returns a body for an error message that can be sent with
+// SendJSONResponse.
+func NewErrorMessageBody(code, message, details string) ErrorMessageBody {
+	body := ErrorMessageBody{
+		Error: struct {
+			Code    string `json:"code"`
+			Message string `json:"message"`
+			Details string `json:"details"`
+		}{
+			Code:    code,
+			Message: message,
+			Details: details,
+		},
+	}
+
+	return body
 }
