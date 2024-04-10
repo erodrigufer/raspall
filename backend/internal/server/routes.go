@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/erodrigufer/raspall/internal/scraper"
+	"github.com/erodrigufer/raspall/internal/utils"
 )
 
 func (app *Application) routes() http.Handler {
@@ -21,7 +22,7 @@ func (app *Application) news() http.HandlerFunc {
 
 		options, err := getQueryOptions(r.URL.RawQuery)
 		if err != nil {
-			HandleServerError(w, fmt.Errorf("error parsing URL query parameters: %w", err), app.ErrorLog)
+			utils.HandleServerError(w, fmt.Errorf("error parsing URL query parameters: %w", err), app.ErrorLog)
 			return
 		}
 
@@ -32,10 +33,10 @@ func (app *Application) news() http.HandlerFunc {
 				articles = limit(options.limit, articles)
 				unreadArticles, err := getUndeliveredObjects(articles, app.cache)
 				if err != nil {
-					HandleServerError(w, err, app.ErrorLog)
+					utils.HandleServerError(w, err, app.ErrorLog)
 					return
 				}
-				SendJSONResponse(w, 200, unreadArticles)
+				utils.SendJSONResponse(w, 200, unreadArticles)
 				return
 			}
 		case "zeit":
@@ -44,10 +45,10 @@ func (app *Application) news() http.HandlerFunc {
 				articles = limit(options.limit, articles)
 				unreadArticles, err := getUndeliveredObjects(articles, app.cache)
 				if err != nil {
-					HandleServerError(w, err, app.ErrorLog)
+					utils.HandleServerError(w, err, app.ErrorLog)
 					return
 				}
-				SendJSONResponse(w, 200, unreadArticles)
+				utils.SendJSONResponse(w, 200, unreadArticles)
 				return
 			}
 		case "hn":
@@ -56,20 +57,20 @@ func (app *Application) news() http.HandlerFunc {
 				articles = limit(options.limit, articles)
 				unreadArticles, err := getUndeliveredObjects(articles, app.cache)
 				if err != nil {
-					HandleServerError(w, err, app.ErrorLog)
+					utils.HandleServerError(w, err, app.ErrorLog)
 					return
 				}
-				SendJSONResponse(w, 200, unreadArticles)
+				utils.SendJSONResponse(w, 200, unreadArticles)
 				return
 			}
 		case "":
 			{
-				SendJSONResponse(w, 200, "all news sites")
+				utils.SendJSONResponse(w, 200, "all news sites")
 				return
 			}
 		default:
 			{
-				HandleNotFoundError(w)
+				utils.HandleNotFoundError(w)
 				return
 			}
 		}
@@ -81,9 +82,9 @@ func (app *Application) health() http.HandlerFunc {
 		response := map[string]string{
 			"Status": "ok",
 		}
-		err := SendJSONResponse(w, http.StatusOK, response)
+		err := utils.SendJSONResponse(w, http.StatusOK, response)
 		if err != nil {
-			HandleServerError(w, err, app.ErrorLog)
+			utils.HandleServerError(w, err, app.ErrorLog)
 		}
 	}
 }

@@ -1,4 +1,4 @@
-package server
+package utils
 
 import (
 	"encoding/json"
@@ -9,8 +9,8 @@ import (
 	"strconv"
 )
 
-// ErrorMessageBody the standard data type used to deliver error messages.
-type ErrorMessageBody struct {
+// errorMessageBody the standard data type used to deliver error messages.
+type errorMessageBody struct {
 	Error struct {
 		Code    string `json:"code"`
 		Message string `json:"message"`
@@ -50,14 +50,14 @@ func HandleNotFoundError(w http.ResponseWriter) {
 }
 
 func sendError(w http.ResponseWriter, statusCode int) {
-	errorMessageBody := NewErrorMessageBody(strconv.Itoa(statusCode), http.StatusText(statusCode), "")
+	errorMessageBody := newErrorMessageBody(strconv.Itoa(statusCode), http.StatusText(statusCode), "")
 	SendJSONResponse(w, statusCode, errorMessageBody)
 }
 
-// NewErrorMessageBody returns a body for an error message that can be sent with
+// newErrorMessageBody returns a body for an error message that can be sent with
 // SendJSONResponse.
-func NewErrorMessageBody(code, message, details string) ErrorMessageBody {
-	body := ErrorMessageBody{
+func newErrorMessageBody(code, message, details string) errorMessageBody {
+	body := errorMessageBody{
 		Error: struct {
 			Code    string `json:"code"`
 			Message string `json:"message"`
