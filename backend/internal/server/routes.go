@@ -5,15 +5,20 @@ import (
 	"net/http"
 
 	"github.com/erodrigufer/raspall/internal/scraper"
+	m "github.com/erodrigufer/raspall/internal/server/middlewares"
 	"github.com/erodrigufer/raspall/internal/utils"
 )
 
 func (app *Application) routes() http.Handler {
+	mws := m.NewMiddlewares(app.InfoLog, app.ErrorLog)
+
+	globalMiddlewares := m.MiddlewareChain(mws.LogRequest, mws.RecoverPanic)
+
 	mux := http.NewServeMux()
 	mux.Handle("GET /v1/news/{site...}", app.news())
 	mux.Handle("GET /v1/health", app.health())
 
-	return mux
+	return globalMiddlewares(mux)
 }
 
 func (app *Application) news() http.HandlerFunc {
