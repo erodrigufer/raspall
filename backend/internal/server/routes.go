@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"github.com/erodrigufer/raspall/internal/scraper"
-	"github.com/patrickmn/go-cache"
 )
 
 func (app *Application) routes() http.Handler {
@@ -31,31 +30,48 @@ func (app *Application) news() http.HandlerFunc {
 			{
 				articles := scraper.GetNacioArticles(r.Context(), app.InfoLog, app.ErrorLog)
 				articles = limit(options.limit, articles)
-				SendJSONResponse(w, 200, articles)
-
+				unreadArticles, err := getUndeliveredObjects(articles, app.cache)
+				if err != nil {
+					HandleServerError(w, err, app.ErrorLog)
+					return
+				}
+				SendJSONResponse(w, 200, unreadArticles)
+				return
 			}
 		case "zeit":
 			{
 				articles := scraper.GetZeitArticles(r.Context(), app.InfoLog, app.ErrorLog, options.removePaywall)
 				articles = limit(options.limit, articles)
-				SendJSONResponse(w, 200, articles)
+				unreadArticles, err := getUndeliveredObjects(articles, app.cache)
+				if err != nil {
+					HandleServerError(w, err, app.ErrorLog)
+					return
+				}
+				SendJSONResponse(w, 200, unreadArticles)
+				return
 			}
 		case "hn":
 			{
 				articles := scraper.GetHackerNewsArticles(r.Context(), app.InfoLog, app.ErrorLog)
 				articles = limit(options.limit, articles)
-				unreadArticles := make([]scraper.Article, 0, 20)
-				for _, article := range articles {
-					// TODO: check error
-					delivered, _ := checkDeliveryStatus(article, app.cache)
-					if !delivered {
-						unreadArticles = append(unreadArticles, article)
-					}
+				unreadArticles, err := getUndeliveredObjects(articles, app.cache)
+				if err != nil {
+					HandleServerError(w, err, app.ErrorLog)
+					return
 				}
 				SendJSONResponse(w, 200, unreadArticles)
+				return
+			}
+		case "":
+			{
+				SendJSONResponse(w, 200, "all news sites")
+				return
 			}
 		default:
-			SendJSONResponse(w, 200, "all news sites")
+			{
+				HandleNotFoundError(w)
+				return
+			}
 		}
 	}
 }
@@ -70,36 +86,4 @@ func (app *Application) health() http.HandlerFunc {
 			HandleServerError(w, err, app.ErrorLog)
 		}
 	}
-}
-
-func limit[O any](limit int, objects []O) []O {
-	if limit < 1 {
-		return objects
-	}
-
-	if len(objects) >= limit {
-		return objects[:limit]
-	}
-
-	return objects
-}
-
-func checkDeliveryStatus(element Deliverable, c *cache.Cache) (bool, error) {
-	hashId, err := element.CreateHash()
-	if err != nil {
-		return false, fmt.Errorf("unable to create a hash id: %w", err)
-	}
-
-	_, found := c.Get(hashId)
-	if found {
-		return true, nil
-	}
-
-	c.Set(hashId, true, cache.DefaultExpiration)
-	return false, nil
-
-}
-
-type Deliverable interface {
-	CreateHash() (string, error)
 }
