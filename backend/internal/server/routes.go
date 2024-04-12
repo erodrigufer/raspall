@@ -15,7 +15,7 @@ func (app *Application) routes() http.Handler {
 	globalMiddlewares := m.MiddlewareChain(mws.LogRequest, mws.Cors, mws.RecoverPanic)
 
 	mux := http.NewServeMux()
-	mux.Handle("GET /v1/news/{site...}", app.news())
+	mux.Handle("GET /v1/articles/{site...}", app.news())
 	mux.Handle("GET /v1/health", app.health())
 
 	return globalMiddlewares(mux)
@@ -32,7 +32,7 @@ func (app *Application) news() http.HandlerFunc {
 		}
 
 		switch site {
-		case "nacio":
+		case "nació":
 			{
 				articles := scraper.GetNacioArticles(r.Context(), app.InfoLog, app.ErrorLog)
 				articles = limit(options.limit, articles)
