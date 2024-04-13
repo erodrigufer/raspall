@@ -12,7 +12,7 @@ import (
 func (app *Application) routes() http.Handler {
 	mws := m.NewMiddlewares(app.InfoLog, app.ErrorLog)
 
-	globalMiddlewares := m.MiddlewareChain(mws.LogRequest, mws.RecoverPanic)
+	globalMiddlewares := m.MiddlewareChain(mws.LogRequest, mws.Cors, mws.RecoverPanic)
 
 	mux := http.NewServeMux()
 	mux.Handle("GET /v1/news/{site...}", app.news())
