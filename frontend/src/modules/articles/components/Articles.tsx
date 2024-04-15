@@ -1,4 +1,4 @@
-import { List, ListItem, ListItemText, Paper } from "@mui/material";
+import { List, ListItem, ListItemButton, ListItemText } from "@mui/material";
 import { Article } from "../types";
 
 type Props = {
@@ -8,15 +8,15 @@ type Props = {
 const Articles: React.FC<Props> = ({ articles }) => {
   return (
     <>
-      <Paper elevation={1}>
-        <List>
-          {articles.map((article) => (
-            <ListItem component="a" href={article.URL} key={article.Title}>
+      <List>
+        {articles.map((article) => (
+          <ListItem disablePadding>
+            <ListItemButton component="a" href={article.URL}>
               <ListItemText primary={article.Title} />
-            </ListItem>
-          ))}
-        </List>
-      </Paper>
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
     </>
   );
 };
