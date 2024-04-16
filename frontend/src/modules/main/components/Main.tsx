@@ -27,18 +27,15 @@ const Main: React.FC = () => {
   return (
     <Box sx={{ width: "100%", maxWidth: "40vw" }}>
       <SourceBadge
-        onClick={onClickSourceBadge("nació", {
-          limit: 10,
-          removePaywall: true,
-        })}
+        onClick={onClickSourceBadge("nació", NewQueryParams(10))}
         label={"Nació"}
       />
       <SourceBadge
-        onClick={onClickSourceBadge("hn", { limit: 30, removePaywall: true })}
+        onClick={onClickSourceBadge("hn", NewQueryParams(30))}
         label={"Hacker News"}
       />
       <SourceBadge
-        onClick={onClickSourceBadge("zeit", { limit: 10, removePaywall: true })}
+        onClick={onClickSourceBadge("zeit", NewQueryParams(10))}
         label={"Zeit"}
       />
 
@@ -60,11 +57,14 @@ export type QueryParams = {
   removePaywall: boolean;
 };
 
+function NewQueryParams(
+  limit: number,
+  removePaywall: boolean = true,
+): QueryParams {
+  return { limit: limit, removePaywall: removePaywall };
+}
+
 export const useArticles = (source: Sources, queryParams: QueryParams) => {
-  // const params: QueryParams = {
-  //   limit: 10,
-  //   removePaywall: true,
-  // };
   const query = useQuery<Article[]>({
     queryKey: ["articles", source, queryParams],
     queryFn: newsFunction,
