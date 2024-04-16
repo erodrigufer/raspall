@@ -32,7 +32,7 @@ func (app *Application) news() http.HandlerFunc {
 		}
 
 		switch site {
-		case "nacio":
+		case "nació":
 			{
 				articles := scraper.GetNacioArticles(r.Context(), app.InfoLog, app.ErrorLog)
 				articles = limit(options.limit, articles)
