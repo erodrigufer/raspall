@@ -41,5 +41,6 @@ func scrapeZeit(ctx context.Context, infoLog, errorLog *log.Logger) []Article {
 func GetZeitArticles(ctx context.Context, infoLog, errorLog *log.Logger, removePaywall bool) []Article {
 	articles := scrapeZeit(ctx, infoLog, errorLog)
 	articles = filterByPaywall(articles, removePaywall)
+	articles = filterByUrlHostName(articles, []string{"premium.zeit.de", "verlag.zeit.de", "sudoku.zeit.de", "spiele.zeit.de", "wiwo.de", "freundederzeit.typeform.com", "zeitakademie.de"})
 	return articles
 }

@@ -1,6 +1,9 @@
 package scraper
 
-import "strings"
+import (
+	"net/url"
+	"strings"
+)
 
 // filterByPaywall removes all articles that are behind a paywall, if the
 // removePaywall boolean input parameter equals true.
@@ -32,13 +35,38 @@ func filterByTopics(articles []Article, undesiredTopics []string) []Article {
 			undesiredTopic = strings.ToLower(undesiredTopic)
 			if strings.Contains(articleTopics, undesiredTopic) {
 				appendArticle = false
-				continue
+				break
 			}
 			// Check if the undesired topic is also found in the title of the
 			// article, if so, do not append the article to the otuput.
 			if strings.Contains(strings.ToLower(article.Title), undesiredTopic) {
 				appendArticle = false
-				continue
+				break
+			}
+		}
+		if appendArticle {
+			output = append(output, article)
+		}
+	}
+	return output
+}
+
+func filterByUrlHostName(articles []Article, undesiredHostNames []string) []Article {
+	output := make([]Article, 0, 100)
+
+	for _, article := range articles {
+		appendArticle := true
+
+		// Parse URL of article.
+		url, err := url.Parse(article.URL)
+		if err != nil {
+			continue
+		}
+
+		for _, undesiredHostName := range undesiredHostNames {
+			if strings.Contains(url.Hostname(), undesiredHostName) {
+				appendArticle = false
+				break
 			}
 		}
 		if appendArticle {
