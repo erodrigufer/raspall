@@ -9,8 +9,8 @@ const Articles: React.FC<Props> = ({ articles }) => {
   return (
     <>
       <List>
-        {articles.map((article) => (
-          <ListItem disablePadding>
+        {articles.map((article, n) => (
+          <ListItem disablePadding key={n}>
             <ListItemButton component="a" href={article.URL}>
               <ListItemText primary={article.Title} />
             </ListItemButton>
