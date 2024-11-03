@@ -1,0 +1,17 @@
+package views
+
+import "github.com/erodrigufer/raspall/internal/scraper"
+
+templ ArticleViewer(articles []scraper.Article) {
+	<table>
+		<tbody>
+			for _, article := range articles {
+				<tr>
+					<td>
+						<a href={ templ.URL(article.URL) } target="_blank">{ article.Title }</a>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
