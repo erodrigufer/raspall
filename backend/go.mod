@@ -1,8 +1,13 @@
 module github.com/erodrigufer/raspall
 
-go 1.22.1
+go 1.23.2
 
-require github.com/gocolly/colly/v2 v2.1.0
+require (
+	github.com/a-h/templ v0.2.793
+	github.com/gocolly/colly/v2 v2.1.0
+	github.com/patrickmn/go-cache v2.1.0+incompatible
+	github.com/rs/cors v1.11.0
+)
 
 require (
 	github.com/PuerkitoBio/goquery v1.9.1 // indirect
@@ -14,12 +19,11 @@ require (
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/kennygrant/sanitize v1.2.4 // indirect
-	github.com/patrickmn/go-cache v2.1.0+incompatible // indirect
-	github.com/rs/cors v1.10.1 // indirect
 	github.com/saintfish/chardet v0.0.0-20230101081208-5e3ef4b5456d // indirect
 	github.com/temoto/robotstxt v1.1.2 // indirect
-	golang.org/x/net v0.24.0 // indirect
-	golang.org/x/text v0.14.0 // indirect
+	golang.org/x/net v0.28.0 // indirect
+	golang.org/x/text v0.17.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
 	google.golang.org/protobuf v1.33.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
