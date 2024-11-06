@@ -8,7 +8,7 @@ package views
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-func Home() templ.Component {
+func Login() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -41,7 +41,7 @@ func Home() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button hx-post=\"/lobsters\" hx-target=\"main\" hx-swap=\"innerHTML\" hx-indicator=\"#spinner_lobsters\" hx-push-url=\"true\">Lobsters</button> <img id=\"spinner_lobsters\" class=\"htmx-indicator\" src=\"/static/spinner.svg\" alt=\"Request in flight\"> <button hx-post=\"/nacio?limit=8\" hx-target=\"main\" hx-swap=\"innerHTML\" hx-indicator=\"#spinner_nacio\" hx-push-url=\"true\">Nació</button> <img id=\"spinner_nacio\" class=\"htmx-indicator\" src=\"/static/spinner.svg\" alt=\"Request in flight\"> <button hx-post=\"/hn?limit=15\" hx-target=\"main\" hx-swap=\"innerHTML\" hx-indicator=\"#spinner_hn\" hx-push-url=\"true\">HN</button> <img id=\"spinner_hn\" class=\"htmx-indicator\" src=\"/static/spinner.svg\" alt=\"Request in flight\"><main></main>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form action=\"/login\" method=\"POST\"><div><label for=\"username\">Username:</label> <input type=\"text\" id=\"username\" name=\"username\" required></div><div><label for=\"password\">Password:</label> <input type=\"password\" id=\"password\" name=\"password\" required></div><button hx-post=\"/login\" hx-target=\"body\" hx-target-error=\"#auth-error\" hx-swap=\"innerHTML\" hx-push-url=\"true\">Login</button><div id=\"auth-error\"></div></form>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

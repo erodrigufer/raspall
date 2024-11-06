@@ -2,12 +2,14 @@ package server
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"sync"
 	"time"
 
+	"github.com/alexedwards/scs/v2"
 	"github.com/patrickmn/go-cache"
 )
 
@@ -20,14 +22,29 @@ type Application struct {
 	// cache is a key-value store to manage
 	// the news that have already been delivered
 	// to the user.
-	cache *cache.Cache
+	cache              *cache.Cache
+	sessionManager     *scs.SessionManager
+	authorizedUsername string
+	authorizedPassword string
 }
 
-func NewAPI(ctx context.Context) *Application {
+func NewAPI(ctx context.Context) (*Application, error) {
 	app := new(Application)
 
 	app.InfoLog = log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	app.ErrorLog = log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+
+	var ok bool
+	app.authorizedUsername, ok = os.LookupEnv("AUTH_USERNAME")
+	if !ok {
+		return nil, fmt.Errorf("AUTH_USERNAME env var is missing")
+	}
+	app.authorizedPassword, ok = os.LookupEnv("AUTH_PASSWORD")
+	if !ok {
+		return nil, fmt.Errorf("AUTH_PASSWORD env var is missing")
+	}
+
+	app.sessionManager = scs.New()
 
 	app.srv = &http.Server{
 		Addr:     ":80",
@@ -45,7 +62,7 @@ func NewAPI(ctx context.Context) *Application {
 	c := cache.New(48*time.Hour, 12*time.Hour)
 	app.cache = c
 
-	return app
+	return app, nil
 }
 
 // StartServerWithGracefulShutdown starts a server and gracefully handles shutdowns.
@@ -93,5 +110,4 @@ func (app *Application) StartServerWithGracefulShutdown(ctx context.Context) {
 
 	// Wait on all goroutines performing asynchronous shutdowns before returning.
 	wg.Wait()
-
 }

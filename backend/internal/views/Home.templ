@@ -2,7 +2,6 @@ package views
 
 templ Home() {
 	@base() {
-		<h1>Raspall</h1>
 		<button hx-post="/lobsters" hx-target="main" hx-swap="innerHTML" hx-indicator="#spinner_lobsters" hx-push-url="true">
 			Lobsters
 		</button>
