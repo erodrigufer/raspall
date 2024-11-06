@@ -27,3 +27,6 @@ go.work
 # Logs
 logs
 *.log
+
+.env
+.envrc
