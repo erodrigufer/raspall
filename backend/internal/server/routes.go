@@ -16,17 +16,50 @@ func (app *Application) routes() http.Handler {
 
 	globalMiddlewares := m.MiddlewareChain(mws.LogRequest, mws.Cors, mws.RecoverPanic)
 
+	fileServer := http.StripPrefix("/static", http.FileServer(http.Dir("./static")))
+
 	mux := http.NewServeMux()
-	mux.Handle("GET /v1/health", app.health())
 	mux.Handle("GET /", app.index())
+	mux.Handle("GET /static/", fileServer)
+	mux.Handle("GET /login", app.getLogin())
+	mux.Handle("POST /login", app.postLogin())
 	mux.Handle("POST /nacio", mws.CacheControl(app.nacio()))
 	mux.Handle("POST /hn", mws.CacheControl(app.hn()))
 	mux.Handle("POST /lobsters", mws.CacheControl(app.lobsters()))
 
-	fileServer := http.FileServer(http.Dir("./static"))
-	mux.Handle("GET /static/", http.StripPrefix("/static", fileServer))
+	mux.Handle("GET /api/health", app.health())
 
 	return globalMiddlewares(mux)
+}
+
+func (app *Application) getLogin() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		err := hypermedia.RenderComponent(r.Context(), w, views.Login())
+		if err != nil {
+			utils.HandleServerError(w, fmt.Errorf("unable to render templ component: %w", err), app.ErrorLog)
+		}
+	}
+}
+
+func (app *Application) postLogin() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		err := r.ParseForm()
+		if err != nil {
+			// TODO: Create function to handle invalid inputs, bad request!
+			return
+		}
+
+		username := r.PostForm.Get("username")
+		password := r.PostForm.Get("password")
+
+		fmt.Println(username, password)
+
+		// TODO: continue here
+		// err := hypermedia.RenderComponent(r.Context(), w, views.Login())
+		// if err != nil {
+		// 	utils.HandleServerError(w, fmt.Errorf("unable to render templ component: %w", err), app.ErrorLog)
+		// }
+	}
 }
 
 func (app *Application) index() http.HandlerFunc {
