@@ -19,6 +19,10 @@ templ base() {
 			<script src="https://unpkg.com/htmx-ext-response-targets@2.0.0/response-targets.js"></script>
 		</head>
 		<body>
+			<h1>Raspall </h1>
+			<div>
+				<button hx-boost="false" hx-post="/logout" hx-push-url="true" hx-swap="innerHTML" hx-target="body">Logout</button>
+			</div>
 			{ children... }
 		</body>
 		<footer>

@@ -3,6 +3,7 @@ package server
 import (
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/erodrigufer/raspall/internal/hypermedia"
 	"github.com/erodrigufer/raspall/internal/scraper"
@@ -30,20 +31,49 @@ func (app *Application) postLogin() http.HandlerFunc {
 		username := r.PostForm.Get("username")
 		password := r.PostForm.Get("password")
 
+		// TODO: remove
 		fmt.Println(username, password)
 
-		http.Redirect(w, r, "/", http.StatusSeeOther)
+		// TODO: Check that envs are not ""
+		AUTHORIZED_USERNAME := os.Getenv("AUTH_USERNAME")
+		AUTHORIZED_PASSWORD := os.Getenv("AUTH_PASSWORD")
+		if username != AUTHORIZED_USERNAME || password != AUTHORIZED_PASSWORD {
+			// TODO: display error message
+			http.Error(w, "Unauthorized", http.StatusUnauthorized)
+			return
+		}
 
-		// TODO: continue here
-		// err := hypermedia.RenderComponent(r.Context(), w, views.Login())
-		// if err != nil {
-		// 	utils.HandleServerError(w, fmt.Errorf("unable to render templ component: %w", err), app.ErrorLog)
-		// }
+		// Renew the session token before making the privilege-level change.
+		err = app.sessionManager.RenewToken(r.Context())
+		if err != nil {
+			// TODO:
+			http.Error(w, err.Error(), 500)
+			return
+		}
+
+		// Make the privilege-level change.
+		app.sessionManager.Put(r.Context(), "userID", username)
+
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+	}
+}
+
+func (app *Application) postLogout() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		err := app.sessionManager.Destroy(r.Context())
+		if err != nil {
+			utils.HandleServerError(w, fmt.Errorf("unable to destroy session: %w", err), app.ErrorLog)
+			return
+		}
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
 	}
 }
 
 func (app *Application) index() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		userID := app.sessionManager.GetString(r.Context(), "userID")
+		app.InfoLog.Printf("userID: %s", userID)
+
 		err := hypermedia.RenderComponent(r.Context(), w, views.Home())
 		if err != nil {
 			utils.HandleServerError(w, fmt.Errorf("unable to render templ component: %w", err), app.ErrorLog)

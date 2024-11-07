@@ -8,6 +8,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/alexedwards/scs/v2"
 	"github.com/patrickmn/go-cache"
 )
 
@@ -20,7 +21,8 @@ type Application struct {
 	// cache is a key-value store to manage
 	// the news that have already been delivered
 	// to the user.
-	cache *cache.Cache
+	cache          *cache.Cache
+	sessionManager *scs.SessionManager
 }
 
 func NewAPI(ctx context.Context) *Application {
@@ -28,6 +30,8 @@ func NewAPI(ctx context.Context) *Application {
 
 	app.InfoLog = log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	app.ErrorLog = log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+
+	app.sessionManager = scs.New()
 
 	app.srv = &http.Server{
 		Addr:     ":80",
@@ -93,5 +97,4 @@ func (app *Application) StartServerWithGracefulShutdown(ctx context.Context) {
 
 	// Wait on all goroutines performing asynchronous shutdowns before returning.
 	wg.Wait()
-
 }

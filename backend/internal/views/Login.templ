@@ -2,7 +2,7 @@ package views
 
 templ Login() {
 	@base() {
-		<div hx-ext="response-targets">
+		<div hx-ext="response-targets" hx-boost="false">
 			<form action="/login" method="POST">
 				<div>
 					<label for="username">Username:</label>
@@ -15,9 +15,10 @@ templ Login() {
 				<button
 					type="submit"
 					hx-post="/login"
-					hx-target="#response"
+					hx-target="body"
 					hx-target-error="#errorAuth"
 					hx-swap="innerHTML"
+					hx-push-url="true"
 				>Login</button>
 			</form>
 			<div id="errorAuth"></div>

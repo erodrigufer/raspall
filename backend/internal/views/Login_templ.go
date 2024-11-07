@@ -41,7 +41,7 @@ func Login() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div hx-ext=\"response-targets\"><form action=\"/login\" method=\"POST\"><div><label for=\"username\">Username:</label> <input type=\"text\" id=\"username\" name=\"username\" required></div><div><label for=\"password\">Password:</label> <input type=\"password\" id=\"password\" name=\"password\" required></div><button type=\"submit\" hx-post=\"/login\" hx-target=\"#response\" hx-target-error=\"#errorAuth\" hx-swap=\"innerHTML\">Login</button></form><div id=\"errorAuth\"></div><div id=\"response\"></div></div>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div hx-ext=\"response-targets\" hx-boost=\"false\"><form action=\"/login\" method=\"POST\"><div><label for=\"username\">Username:</label> <input type=\"text\" id=\"username\" name=\"username\" required></div><div><label for=\"password\">Password:</label> <input type=\"password\" id=\"password\" name=\"password\" required></div><button type=\"submit\" hx-post=\"/login\" hx-target=\"body\" hx-target-error=\"#errorAuth\" hx-swap=\"innerHTML\" hx-push-url=\"true\">Login</button></form><div id=\"errorAuth\"></div><div id=\"response\"></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
