@@ -8,7 +8,6 @@ import (
 )
 
 func scrapeNacioDigital(ctx context.Context, infoLog, errorLog *log.Logger) []Article {
-
 	f := func(art *[]Article) colly.HTMLCallback {
 		return func(element *colly.HTMLElement) {
 			title := element.ChildText("h2 > a")
@@ -40,7 +39,7 @@ func scrapeNacioDigital(ctx context.Context, infoLog, errorLog *log.Logger) []Ar
 func GetNacioArticles(ctx context.Context, infoLog, errorLog *log.Logger) []Article {
 	articles := scrapeNacioDigital(ctx, infoLog, errorLog)
 
-	undesiredTopics := []string{"eleccions", "PSC", "Puigdemont", "Salvador Illa", "ERC", "amnistia", "Aragonès", "ANC", "PP", "PNB"}
+	undesiredTopics := []string{"eleccions", "PSC", "Puigdemont", "Salvador Illa", "ERC", "amnistia", "Aragonès", "ANC", "PP", "PNB", "Koldo"}
 	articles = filterByTopics(articles, undesiredTopics)
 	return articles
 }
