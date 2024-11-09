@@ -71,3 +71,13 @@ func newErrorMessageBody(code, message, details string) errorMessageBody {
 
 	return body
 }
+
+func SendErrorMessage(w http.ResponseWriter, statusCode int, errorLogger *log.Logger, errorMessage string) {
+	h := w.Header()
+	h.Set("Content-Type", "text/html; charset=utf-8")
+	w.WriteHeader(statusCode)
+	_, err := fmt.Fprintln(w, errorMessage)
+	if err != nil {
+		HandleServerError(w, fmt.Errorf("could not write to http.ResponseWriter: %w", err), errorLogger)
+	}
+}

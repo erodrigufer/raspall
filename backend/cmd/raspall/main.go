@@ -10,7 +10,6 @@ import (
 )
 
 func main() {
-
 	ctx := context.Background()
 
 	if err := run(ctx); err != nil {
@@ -26,9 +25,11 @@ func run(ctx context.Context) error {
 	ctx, cancel := signal.NotifyContext(ctx, os.Interrupt)
 	defer cancel()
 
-	app := server.NewAPI(ctx)
+	app, err := server.NewAPI(ctx)
+	if err != nil {
+		return fmt.Errorf("unable to create a new app: %w", err)
+	}
 	app.StartServerWithGracefulShutdown(ctx)
 
 	return nil
-
 }

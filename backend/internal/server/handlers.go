@@ -3,7 +3,6 @@ package server
 import (
 	"fmt"
 	"net/http"
-	"os"
 
 	"github.com/erodrigufer/raspall/internal/hypermedia"
 	"github.com/erodrigufer/raspall/internal/scraper"
@@ -24,30 +23,22 @@ func (app *Application) postLogin() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		err := r.ParseForm()
 		if err != nil {
-			// TODO: Create function to handle invalid inputs, bad request!
+			utils.SendErrorMessage(w, http.StatusBadRequest, app.ErrorLog, fmt.Sprintf("Bad request: %s", err.Error()))
 			return
 		}
 
 		username := r.PostForm.Get("username")
 		password := r.PostForm.Get("password")
 
-		// TODO: remove
-		fmt.Println(username, password)
-
-		// TODO: Check that envs are not ""
-		AUTHORIZED_USERNAME := os.Getenv("AUTH_USERNAME")
-		AUTHORIZED_PASSWORD := os.Getenv("AUTH_PASSWORD")
-		if username != AUTHORIZED_USERNAME || password != AUTHORIZED_PASSWORD {
-			// TODO: display error message
-			http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		if username != app.authorizedUsername || password != app.authorizedPassword {
+			utils.SendErrorMessage(w, http.StatusUnauthorized, app.ErrorLog, "Username and/or password are invalid.")
 			return
 		}
 
 		// Renew the session token before making the privilege-level change.
 		err = app.sessionManager.RenewToken(r.Context())
 		if err != nil {
-			// TODO:
-			http.Error(w, err.Error(), 500)
+			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 			return
 		}
 
@@ -71,9 +62,6 @@ func (app *Application) postLogout() http.HandlerFunc {
 
 func (app *Application) index() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		userID := app.sessionManager.GetString(r.Context(), "userID")
-		app.InfoLog.Printf("userID: %s", userID)
-
 		err := hypermedia.RenderComponent(r.Context(), w, views.Home())
 		if err != nil {
 			utils.HandleServerError(w, fmt.Errorf("unable to render templ component: %w", err), app.ErrorLog)

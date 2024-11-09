@@ -8,7 +8,6 @@ func (m *Middlewares) Authenticate(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		userID := m.sessionManager.GetString(r.Context(), "userID")
 		if userID == "" {
-			m.infoLog.Print("Unauthorized request")
 			http.Redirect(w, r, "/login", http.StatusSeeOther)
 			return
 		}

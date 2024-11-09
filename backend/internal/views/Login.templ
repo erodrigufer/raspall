@@ -2,8 +2,7 @@ package views
 
 templ Login() {
 	@base() {
-		<div id="errors"></div>
-		<form action="/login" method="POST" hx-ext="response-targets">
+		<form action="/login" method="POST">
 			<div>
 				<label for="username">Username:</label>
 				<input type="text" id="username" name="username" required/>
@@ -12,14 +11,10 @@ templ Login() {
 				<label for="password">Password:</label>
 				<input type="password" id="password" name="password" required/>
 			</div>
-			<button
-				type="submit"
-				hx-post="/login"
-				hx-target="body"
-				hx-target-error="#errors"
-				hx-swap="innerHTML"
-				hx-push-url="true"
-			>Login</button>
+			<button hx-post="/login" hx-target="body" hx-target-error="#auth-error" hx-swap="innerHTML" hx-push-url="true">
+				Login
+			</button>
+			<div id="auth-error"></div>
 		</form>
 	}
 }
