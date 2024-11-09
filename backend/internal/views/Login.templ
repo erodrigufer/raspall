@@ -2,27 +2,24 @@ package views
 
 templ Login() {
 	@base() {
-		<div hx-ext="response-targets" hx-boost="false">
-			<form action="/login" method="POST">
-				<div>
-					<label for="username">Username:</label>
-					<input type="text" id="username" name="username" required/>
-				</div>
-				<div>
-					<label for="password">Password:</label>
-					<input type="password" id="password" name="password" required/>
-				</div>
-				<button
-					type="submit"
-					hx-post="/login"
-					hx-target="body"
-					hx-target-error="#errorAuth"
-					hx-swap="innerHTML"
-					hx-push-url="true"
-				>Login</button>
-			</form>
-			<div id="errorAuth"></div>
-			<div id="response"></div>
-		</div>
+		<div id="errors"></div>
+		<form action="/login" method="POST" hx-ext="response-targets">
+			<div>
+				<label for="username">Username:</label>
+				<input type="text" id="username" name="username" required/>
+			</div>
+			<div>
+				<label for="password">Password:</label>
+				<input type="password" id="password" name="password" required/>
+			</div>
+			<button
+				type="submit"
+				hx-post="/login"
+				hx-target="body"
+				hx-target-error="#errors"
+				hx-swap="innerHTML"
+				hx-push-url="true"
+			>Login</button>
+		</form>
 	}
 }
