@@ -21,12 +21,12 @@ func (app *Application) routes() http.Handler {
 	mux.Handle("GET /api/health", app.health())
 
 	protectedMux := http.NewServeMux()
-	mux.Handle("/", mws.Authenticate(protectedMux))
+	mux.Handle("/", mws.Authenticate(mws.CacheControl(protectedMux)))
 
 	protectedMux.Handle("GET /", app.index())
-	protectedMux.Handle("POST /nacio", mws.CacheControl(app.nacio()))
-	protectedMux.Handle("POST /hn", mws.CacheControl(app.hn()))
-	protectedMux.Handle("POST /lobsters", mws.CacheControl(app.lobsters()))
+	protectedMux.Handle("POST /nacio", app.nacio())
+	protectedMux.Handle("POST /hn", app.hn())
+	protectedMux.Handle("POST /lobsters", app.lobsters())
 
 	return globalMiddlewares(mux)
 }
