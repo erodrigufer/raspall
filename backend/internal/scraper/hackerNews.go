@@ -8,7 +8,6 @@ import (
 )
 
 func scrapeHackerNews(ctx context.Context, infoLog, errorLog *log.Logger) []Article {
-
 	f := func(art *[]Article) colly.HTMLCallback {
 		return func(element *colly.HTMLElement) {
 			titleTexts := element.ChildTexts("a")
@@ -34,8 +33,9 @@ func scrapeHackerNews(ctx context.Context, infoLog, errorLog *log.Logger) []Arti
 }
 
 func GetHackerNewsArticles(ctx context.Context, infoLog, errorLog *log.Logger) []Article {
-
 	articles := scrapeHackerNews(ctx, infoLog, errorLog)
-	return articles
 
+	undesiredTopics := []string{"hiring"}
+	articles = filterByTopics(articles, undesiredTopics)
+	return articles
 }
