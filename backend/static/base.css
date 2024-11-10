@@ -3,3 +3,12 @@ body {
   font-size: 12pt;
   line-height: 1.45em;
 }
+
+a {
+  text-decoration: none;
+  color: #0073e6;
+}
+
+a:hover {
+  color: #005bb5;
+}
