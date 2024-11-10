@@ -83,7 +83,7 @@ func (app *Application) nacio() http.HandlerFunc {
 			utils.HandleServerError(w, err, app.ErrorLog)
 			return
 		}
-		err = hypermedia.RenderComponent(r.Context(), w, views.ArticleViewer(unreadArticles))
+		err = hypermedia.RenderComponent(r.Context(), w, views.ArticleViewer(unreadArticles, "Nació Digital"))
 		if err != nil {
 			utils.HandleServerError(w, fmt.Errorf("unable to render templ component: %w", err), app.ErrorLog)
 		}
@@ -104,7 +104,7 @@ func (app *Application) lobsters() http.HandlerFunc {
 			utils.HandleServerError(w, err, app.ErrorLog)
 			return
 		}
-		err = hypermedia.RenderComponent(r.Context(), w, views.ArticleViewer(unreadArticles))
+		err = hypermedia.RenderComponent(r.Context(), w, views.ArticleViewer(unreadArticles, "Lobsters"))
 		if err != nil {
 			utils.HandleServerError(w, fmt.Errorf("unable to render templ component: %w", err), app.ErrorLog)
 		}
@@ -125,7 +125,7 @@ func (app *Application) hn() http.HandlerFunc {
 			utils.HandleServerError(w, err, app.ErrorLog)
 			return
 		}
-		err = hypermedia.RenderComponent(r.Context(), w, views.ArticleViewer(unreadArticles))
+		err = hypermedia.RenderComponent(r.Context(), w, views.ArticleViewer(unreadArticles, "Hacker News"))
 		if err != nil {
 			utils.HandleServerError(w, fmt.Errorf("unable to render templ component: %w", err), app.ErrorLog)
 		}
