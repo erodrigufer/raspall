@@ -2,6 +2,8 @@ body {
   font-family: "helvetica neue", arial, sans-serif;
   font-size: 12pt;
   line-height: 1.45em;
+  margin: 0 auto;
+  max-width: 50vw;
 }
 
 a {
@@ -45,6 +47,7 @@ table tr:hover {
 table th {
   background-color: #f2f2f2;
   color: #333;
+  text-align: center;
 }
 
 table th:first-child {
@@ -61,4 +64,12 @@ table tr:last-child td:first-child {
 
 table tr:last-child td:last-child {
   border-bottom-right-radius: 10px;
+}
+
+table td {
+  padding-left: 1em;
+}
+
+footer {
+  text-align: center;
 }
