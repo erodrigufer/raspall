@@ -132,6 +132,27 @@ func (app *Application) hn() http.HandlerFunc {
 	}
 }
 
+func (app *Application) theGuardian() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		options, err := getQueryOptions(r.URL.RawQuery)
+		if err != nil {
+			utils.HandleServerError(w, fmt.Errorf("error parsing URL query parameters: %w", err), app.ErrorLog)
+			return
+		}
+		articles := scraper.GetTheGuardianArticles(r.Context(), app.InfoLog, app.ErrorLog)
+		articles = limit(options.limit, articles)
+		unreadArticles, err := getUndeliveredObjects(articles, app.cache)
+		if err != nil {
+			utils.HandleServerError(w, err, app.ErrorLog)
+			return
+		}
+		err = hypermedia.RenderComponent(r.Context(), w, views.ArticleViewer(unreadArticles, "The Guardian"))
+		if err != nil {
+			utils.HandleServerError(w, fmt.Errorf("unable to render templ component: %w", err), app.ErrorLog)
+		}
+	}
+}
+
 func (app *Application) health() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		response := map[string]string{

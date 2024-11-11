@@ -14,6 +14,16 @@ templ Home() {
 			HN
 		</button>
 		<img id="spinner_hn" class="htmx-indicator" src="/static/spinner.svg" alt="Request in flight"/>
+		<button
+			hx-post="/theguardian?limit=15"
+			hx-target="main"
+			hx-swap="innerHTML"
+			hx-indicator="#spinner_the_guardian"
+			hx-push-url="true"
+		>
+			The Guardian
+		</button>
+		<img id="spinner_the_guardian" class="htmx-indicator" src="/static/spinner.svg" alt="Request in flight"/>
 		<main></main>
 	}
 }

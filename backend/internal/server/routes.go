@@ -27,6 +27,7 @@ func (app *Application) routes() http.Handler {
 	protectedMux.Handle("POST /nacio", app.nacio())
 	protectedMux.Handle("POST /hn", app.hn())
 	protectedMux.Handle("POST /lobsters", app.lobsters())
+	protectedMux.Handle("POST /theguardian", app.theGuardian())
 
 	return globalMiddlewares(mux)
 }
