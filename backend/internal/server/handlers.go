@@ -62,7 +62,7 @@ func (app *Application) postLogout() http.HandlerFunc {
 
 func (app *Application) index() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		err := hypermedia.RenderComponent(r.Context(), w, views.Home())
+		err := hypermedia.RenderComponent(r.Context(), w, views.Index())
 		if err != nil {
 			utils.HandleServerError(w, fmt.Errorf("unable to render templ component: %w", err), app.ErrorLog)
 		}
