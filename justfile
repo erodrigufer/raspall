@@ -2,6 +2,12 @@ set shell := ["/bin/zsh", "-c"]
 
 IMAGE_NAME := 'raspall'
 CONTAINER_NAME := 'raspall'
+BUILD_HASH_COMMIT := ` \
+  if [ -n "$(git status --porcelain)" ]; then \
+    echo "$(git log -1 --pretty=%h)+dirty"; \
+  else \
+    echo "$(git log -1 --pretty=%h)"; \
+  fi`
 
 default:
   @just --list
@@ -38,11 +44,11 @@ templ:
 
 [group('docker')]
 build-mac:
-	cd backend && docker build . --tag {{ IMAGE_NAME }}
+	cd backend && docker build . --build-arg BUILD_HASH_COMMIT={{ BUILD_HASH_COMMIT }} --tag {{ IMAGE_NAME }}
 
 [group('docker')]
 build-linux:
-	cd backend && docker build . --platform linux/amd64 --tag ${DOCKER_REPO}
+	cd backend && docker build . --platform linux/amd64 --build-arg BUILD_HASH_COMMIT={{ BUILD_HASH_COMMIT }} --tag ${DOCKER_REPO}
 
 [group('docker')]
 push: build-linux
