@@ -3,7 +3,14 @@ body {
   font-size: 12pt;
   line-height: 1.45em;
   margin: 0 auto;
-  max-width: 50vw;
+}
+
+/*Only large viewports should restrict the max-width,*/
+/*otherwise mobile is not wide enough!*/
+@media (width >= 1200px) {
+  body {
+    max-width: 50vw;
+  }
 }
 
 a {
@@ -68,6 +75,11 @@ table tr:last-child td:last-child {
 
 table td {
   padding-left: 1em;
+}
+
+div.main-content {
+  margin-right: 0.7em;
+  margin-left: 0.7em;
 }
 
 footer {

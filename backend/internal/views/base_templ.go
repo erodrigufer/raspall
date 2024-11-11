@@ -34,7 +34,7 @@ func base() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!doctype html><html lang=\"en\"><meta name=\"description\" content=\"Raspall - content consumption management system\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><meta name=\"theme-color\" content=\"#470DAC\"><link rel=\"stylesheet\" href=\"/static/base.css\"><title>Raspall</title><script src=\"https://unpkg.com/htmx.org@2.0.3\"></script><script src=\"https://unpkg.com/htmx-ext-response-targets@2.0.0/response-targets.js\"></script></head><body hx-ext=\"response-targets\"><h1>Raspall </h1><div><button hx-boost=\"false\" hx-post=\"/logout\" hx-push-url=\"true\" hx-swap=\"innerHTML\" hx-target=\"body\">Logout</button></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!doctype html><html lang=\"en\"><meta name=\"description\" content=\"Raspall - content consumption management system\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><meta name=\"theme-color\" content=\"#470DAC\"><link rel=\"stylesheet\" href=\"/static/base.css\"><title>Raspall</title><script src=\"https://unpkg.com/htmx.org@2.0.3\"></script><script src=\"https://unpkg.com/htmx-ext-response-targets@2.0.0/response-targets.js\"></script></head><body hx-ext=\"response-targets\"><div class=\"main-content\"><h1>Raspall </h1><div><button hx-boost=\"false\" hx-post=\"/logout\" hx-push-url=\"true\" hx-swap=\"innerHTML\" hx-target=\"body\">Logout</button></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -42,7 +42,7 @@ func base() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</body><footer>Developed by <a href=\"https://github.com/erodrigufer\" target=\"_blank\">Eduardo Rodriguez </a> &copy; ")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></body><footer>Developed by <a href=\"https://github.com/erodrigufer\" target=\"_blank\">Eduardo Rodriguez </a> &copy; ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -50,7 +50,7 @@ func base() templ.Component {
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(
 			strconv.Itoa(time.Now().Year()))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `base.templ`, Line: 30, Col: 33}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `base.templ`, Line: 32, Col: 33}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
