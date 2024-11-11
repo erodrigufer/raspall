@@ -17,11 +17,11 @@ func (app *Application) routes() http.Handler {
 	mux.Handle("GET /login", mws.AuthenticateLogin(app.getLogin()))
 	mux.Handle("POST /login", app.postLogin())
 	mux.Handle("POST /logout", app.postLogout())
-	mux.Handle("GET /static/", fileServer)
+	mux.Handle("GET /static/", mws.PublicCacheCacheControl(fileServer))
 	mux.Handle("GET /api/health", app.health())
 
 	protectedMux := http.NewServeMux()
-	mux.Handle("/", mws.Authenticate(mws.CacheControl(protectedMux)))
+	mux.Handle("/", mws.Authenticate(mws.PrivateCacheControl(protectedMux)))
 
 	protectedMux.Handle("GET /", app.index())
 	protectedMux.Handle("POST /nacio", app.nacio())
