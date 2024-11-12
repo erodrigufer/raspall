@@ -10,11 +10,11 @@ import (
 func scrapeLobsters(ctx context.Context, infoLog, errorLog *log.Logger) []Article {
 	f := func(art *[]Article) colly.HTMLCallback {
 		return func(element *colly.HTMLElement) {
-			title := element.ChildText("a")
-			url := element.ChildAttr("a", "href")
-
+			title := element.ChildText("span.link > a")
+			url := element.ChildAttr("span.link > a", "href")
+			tags := element.ChildTexts("span.tags > a.tag")
 			if title != "" && url != "" {
-				article := Article{Title: title, URL: url}
+				article := Article{Title: title, URL: url, Topics: tags}
 				*art = append(*art, article)
 			}
 		}
@@ -22,7 +22,7 @@ func scrapeLobsters(ctx context.Context, infoLog, errorLog *log.Logger) []Articl
 
 	q := collectorQuery{
 		url:             "https://lobste.rs/",
-		querySelector:   "span.link",
+		querySelector:   "div.details",
 		queryCallbackFn: f,
 	}
 
