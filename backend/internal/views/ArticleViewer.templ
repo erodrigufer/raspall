@@ -14,6 +14,9 @@ templ ArticleViewer(articles []scraper.Article, pageTitle string) {
 				<tr>
 					<td>
 						<a href={ templ.URL(article.URL) } target="_blank">{ article.Title }</a>
+						for _, tag := range article.Topics {
+							<span class="article-topic-badge">{ tag }</span>
+						}
 					</td>
 				</tr>
 			}

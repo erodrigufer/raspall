@@ -85,3 +85,13 @@ div.main-content {
 footer {
   text-align: center;
 }
+
+span.article-topic-badge {
+  background-color: #fffcd7;
+  border: 1px solid #d5d458;
+  border-radius: 5px;
+  margin-left: 0.25em;
+  padding: 0px 0.4em 1px 0.4em;
+  font-size: 0.8em;
+  vertical-align: middle;
+}
