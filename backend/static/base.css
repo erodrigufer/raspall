@@ -1,3 +1,10 @@
+:root {
+  --anchor-color: hsl(210, 100%, 45%);
+  --anchor-hover-color: hsl(210, 100%, 35%);
+  --article-topic-badge-bg-color: hsl(56, 100%, 92%);
+  --article-topic-badge-border-color: hsl(60, 60%, 59%);
+}
+
 body {
   font-family: "helvetica neue", arial, sans-serif;
   font-size: 12pt;
@@ -15,11 +22,11 @@ body {
 
 a {
   text-decoration: none;
-  color: #0073e6;
+  color: var(--anchor-color);
 }
 
 a:hover {
-  color: #005bb5;
+  color: var(--anchor-hover-color);
 }
 
 table {
@@ -87,8 +94,8 @@ footer {
 }
 
 span.article-topic-badge {
-  background-color: #fffcd7;
-  border: 1px solid #d5d458;
+  background-color: var(--article-topic-badge-bg-color);
+  border: 1px solid var(--article-topic-badge-border-color);
   border-radius: 5px;
   margin-left: 0.25em;
   padding: 0px 0.4em 1px 0.4em;
