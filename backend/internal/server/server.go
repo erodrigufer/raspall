@@ -59,7 +59,7 @@ func NewAPI(ctx context.Context) (*Application, error) {
 		WriteTimeout: 30 * time.Second,
 	}
 
-	c := cache.New(48*time.Hour, 12*time.Hour)
+	c := cache.New(4*24*time.Hour, 12*time.Hour)
 	app.cache = c
 
 	return app, nil
