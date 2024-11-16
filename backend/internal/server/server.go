@@ -45,6 +45,8 @@ func NewAPI(ctx context.Context) (*Application, error) {
 	}
 
 	app.sessionManager = scs.New()
+	app.sessionManager.Lifetime = 7 * 24 * time.Hour
+	app.sessionManager.IdleTimeout = 7 * 24 * time.Hour
 
 	app.srv = &http.Server{
 		Addr:     ":80",
