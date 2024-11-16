@@ -50,14 +50,17 @@ build-mac:
 build-linux:
 	cd backend && docker build . --platform linux/amd64 --build-arg BUILD_HASH_COMMIT={{ BUILD_HASH_COMMIT }} --tag ${DOCKER_REPO}
 
+# Build Linux Docker image and push to DockerHub.
 [group('docker')]
 push: build-linux
 	docker push ${DOCKER_REPO}
 
+# Locally execute the Docker image at localhost:80.
 [group('docker')]
 docker-run: build-mac
 	docker run -d --rm -p 80:80 --env AUTH_USERNAME=${AUTH_USERNAME} --env AUTH_PASSWORD=${AUTH_PASSWORD} --name {{ CONTAINER_NAME }} {{ IMAGE_NAME }}
 
+# Stop the local Docker container.
 [group('docker')]
 docker-stop:
   docker stop {{ CONTAINER_NAME }}
