@@ -31,7 +31,7 @@ func (app *Application) postLogin() http.HandlerFunc {
 		password := r.PostForm.Get("password")
 
 		if username != app.authorizedUsername || password != app.authorizedPassword {
-			utils.SendErrorMessage(w, http.StatusUnauthorized, app.ErrorLog, "Username and/or password are invalid.")
+			utils.SendErrorMessage(w, http.StatusUnauthorized, app.ErrorLog, `<p class="error-response"><b>Username</b> and/or <b>password</b> are invalid.</p>`)
 			return
 		}
 

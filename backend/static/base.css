@@ -109,6 +109,32 @@ span.article-topic-badge {
   /*background-color: hsl(50, 10%, 58%);*/
 }
 
+p.error-response {
+  background-color: hsl(0, 100%, 95%);
+  border-left: 4px solid hsl(0, 100%, 80%);
+  padding: 0.6em;
+  margin: 2em auto 1em auto;
+}
+
+@media (width >= 1200px) {
+  p.error-response {
+    max-width: 50%;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+p.error-response {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
 form input {
   margin-bottom: 1em;
   margin-left: 1.2em;
