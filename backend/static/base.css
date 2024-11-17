@@ -3,6 +3,8 @@
   --anchor-hover-color: hsl(210, 100%, 35%);
   --article-topic-badge-bg-color: hsl(56, 100%, 92%);
   --article-topic-badge-border-color: hsl(60, 60%, 59%);
+  --error-message-bg-color: hsl(0, 100%, 95%);
+  --error-message-border-color: hsl(0, 100%, 80%);
 }
 
 body {
@@ -111,8 +113,8 @@ span.article-topic-badge {
 }
 
 p.error-response {
-  background-color: hsl(0, 100%, 95%);
-  border-left: 4px solid hsl(0, 100%, 80%);
+  background-color: var(--error-message-bg-color);
+  border-left: 4px solid var(--error-message-border-color);
   padding: 0.6em;
   margin: 2em auto 1em auto;
 }
