@@ -148,3 +148,7 @@ form input {
   flex-direction: row;
   justify-content: center;
 }
+
+button.articles-btn {
+  padding: 0px 0.4em 1px 0.4em;
+}
