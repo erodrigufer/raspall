@@ -1,24 +1,48 @@
 package views
 
+const optionsNacio = "?limit=8"
+
 templ Index() {
 	@base() {
-		<button hx-post="/lobsters" hx-target="main" hx-swap="innerHTML" hx-indicator="#spinner_articles" hx-push-url="true">
+		<button
+			class="articles-btn"
+			hx-post="/articles/lobsters"
+			hx-target="main"
+			hx-swap="innerHTML"
+			hx-indicator="#spinner_articles"
+			hx-push-url="true"
+		>
 			Lobsters
 		</button>
 		<button
-			hx-post="/nacio?limit=8"
+			class="articles-btn"
+			hx-post={ "/articles/nacio" + optionsNacio }
 			hx-target="main"
 			hx-swap="innerHTML"
 			hx-indicator="#spinner_articles"
 			hx-push-url="true"
 		>
 			Nació
+			<span
+				hx-get={ "/articles/nacio/new" + optionsNacio }
+				hx-trigger="load, click"
+				hx-swap="innerHTML"
+				hx-target="this"
+			></span>
 		</button>
-		<button hx-post="/hn?limit=15" hx-target="main" hx-swap="innerHTML" hx-indicator="#spinner_articles" hx-push-url="true">
+		<button
+			class="articles-btn"
+			hx-post="/articles/hn?limit=15"
+			hx-target="main"
+			hx-swap="innerHTML"
+			hx-indicator="#spinner_articles"
+			hx-push-url="true"
+		>
 			HN
 		</button>
 		<button
-			hx-post="/theguardian?limit=15"
+			class="articles-btn"
+			hx-post="/articles/theguardian?limit=15"
 			hx-target="main"
 			hx-swap="innerHTML"
 			hx-indicator="#spinner_articles"

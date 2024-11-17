@@ -33,16 +33,44 @@ func checkDeliveryStatus(element Deliverable, c *cache.Cache) (bool, error) {
 		return true, nil
 	}
 
-	c.Set(hashId, true, cache.DefaultExpiration)
 	return false, nil
+}
 
+func setDeliveredStatus(element Deliverable, c *cache.Cache) (bool, error) {
+	delivered, err := checkDeliveryStatus(element, c)
+	if err != nil {
+		return false, fmt.Errorf("unable to set delivered status: %w", err)
+	}
+	hashId, err := element.CreateHash()
+	if err != nil {
+		return false, fmt.Errorf("unable to create a hash id: %w", err)
+	}
+
+	if !delivered {
+		c.Set(hashId, true, cache.DefaultExpiration)
+		return false, nil
+	}
+	return true, nil
+}
+
+func checkIfUndeliveredObjectsPresent[O Deliverable](objects []O, c *cache.Cache) (bool, error) {
+	for _, object := range objects {
+		delivered, err := checkDeliveryStatus(object, c)
+		if err != nil {
+			return false, fmt.Errorf("unable to check delivery status of object: %w", err)
+		}
+		if !delivered {
+			return true, nil
+		}
+	}
+	return false, nil
 }
 
 func getUndeliveredObjects[O Deliverable](objects []O, c *cache.Cache) ([]O, error) {
 	output := make([]O, 0, 30)
 
 	for _, object := range objects {
-		delivered, err := checkDeliveryStatus(object, c)
+		delivered, err := setDeliveredStatus(object, c)
 		if err != nil {
 			return nil, fmt.Errorf("unable to get undelivered objects: %w", err)
 		}

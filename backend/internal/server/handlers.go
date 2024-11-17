@@ -69,7 +69,7 @@ func (app *Application) index() http.HandlerFunc {
 	}
 }
 
-func (app *Application) nacio() http.HandlerFunc {
+func (app *Application) undeliveredNacio() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		options, err := getQueryOptions(r.URL.RawQuery)
 		if err != nil {
@@ -90,7 +90,28 @@ func (app *Application) nacio() http.HandlerFunc {
 	}
 }
 
-func (app *Application) lobsters() http.HandlerFunc {
+func (app *Application) statusNacio() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		options, err := getQueryOptions(r.URL.RawQuery)
+		if err != nil {
+			utils.HandleServerError(w, fmt.Errorf("error parsing URL query parameters: %w", err), app.ErrorLog)
+			return
+		}
+		articles := scraper.GetNacioArticles(r.Context(), app.InfoLog, app.ErrorLog)
+		articles = limit(options.limit, articles)
+		unreadArticlesPresent, err := checkIfUndeliveredObjectsPresent(articles, app.cache)
+		if err != nil {
+			utils.HandleServerError(w, err, app.ErrorLog)
+			return
+		}
+		err = hypermedia.RenderComponent(r.Context(), w, views.UnreadArticlesNotifier(unreadArticlesPresent))
+		if err != nil {
+			utils.HandleServerError(w, fmt.Errorf("unable to render templ component: %w", err), app.ErrorLog)
+		}
+	}
+}
+
+func (app *Application) undeliveredLobsters() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		options, err := getQueryOptions(r.URL.RawQuery)
 		if err != nil {
@@ -111,7 +132,7 @@ func (app *Application) lobsters() http.HandlerFunc {
 	}
 }
 
-func (app *Application) hn() http.HandlerFunc {
+func (app *Application) undeliveredHn() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		options, err := getQueryOptions(r.URL.RawQuery)
 		if err != nil {
@@ -132,7 +153,7 @@ func (app *Application) hn() http.HandlerFunc {
 	}
 }
 
-func (app *Application) theGuardian() http.HandlerFunc {
+func (app *Application) undeliveredTheGuardian() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		options, err := getQueryOptions(r.URL.RawQuery)
 		if err != nil {

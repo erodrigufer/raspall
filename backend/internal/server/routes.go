@@ -24,10 +24,12 @@ func (app *Application) routes() http.Handler {
 	mux.Handle("/", mws.Authenticate(mws.PrivateCacheControl(protectedMux)))
 
 	protectedMux.Handle("GET /", app.index())
-	protectedMux.Handle("POST /nacio", app.nacio())
-	protectedMux.Handle("POST /hn", app.hn())
-	protectedMux.Handle("POST /lobsters", app.lobsters())
-	protectedMux.Handle("POST /theguardian", app.theGuardian())
+	protectedMux.Handle("POST /articles/nacio", app.undeliveredNacio())
+	protectedMux.Handle("POST /articles/hn", app.undeliveredHn())
+	protectedMux.Handle("POST /articles/lobsters", app.undeliveredLobsters())
+	protectedMux.Handle("POST /articles/theguardian", app.undeliveredTheGuardian())
+
+	protectedMux.Handle("GET /articles/nacio/new", app.statusNacio())
 
 	return globalMiddlewares(mux)
 }
