@@ -39,7 +39,7 @@ func scrapeNacioDigital(ctx context.Context, infoLog, errorLog *log.Logger) []Ar
 func GetNacioArticles(ctx context.Context, infoLog, errorLog *log.Logger) []Article {
 	articles := scrapeNacioDigital(ctx, infoLog, errorLog)
 
-	undesiredTopics := []string{"eleccions", "PSC", "Puigdemont", "Salvador Illa", "ERC", "amnistia", "Aragonès", "ANC", "PP", "PNB", "Koldo"}
+	undesiredTopics := []string{"eleccions", "PSC", "Puigdemont", "Salvador Illa", "ERC", "amnistia", "Aragonès", "ANC", "PP", "PNB", "Koldo", "Illa"}
 	articles = filterByTopics(articles, undesiredTopics)
 	return articles
 }
