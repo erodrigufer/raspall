@@ -37,5 +37,7 @@ func scrapeTheGuardian(ctx context.Context, infoLog, errorLog *log.Logger) []Art
 func GetTheGuardianArticles(ctx context.Context, infoLog, errorLog *log.Logger) []Article {
 	articles := scrapeTheGuardian(ctx, infoLog, errorLog)
 
+	undesiredTopics := []string{"Trump", "Musk", "Gaza", "Israel", "Lebanon"}
+	articles = filterByTopics(articles, undesiredTopics)
 	return articles
 }
