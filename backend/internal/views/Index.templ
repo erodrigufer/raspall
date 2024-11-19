@@ -1,18 +1,28 @@
 package views
 
 const optionsNacio = "?limit=8"
+const optionsLobsters = ""
+const optionsHn = "?limit=15"
+const optionsTheGuardian = "?limit=15"
 
 templ Index() {
 	@base() {
 		<button
 			class="articles-btn"
-			hx-post="/articles/lobsters"
+			hx-post={ "/articles/lobsters" + optionsLobsters }
 			hx-target="main"
 			hx-swap="innerHTML"
 			hx-indicator="#spinner_articles"
 			hx-push-url="true"
 		>
 			Lobsters
+			<span
+				hx-get={ "/articles/lobsters/new" + optionsLobsters }
+				hx-trigger="load, lobsters_settled from:body"
+				hx-swap="innerHTML"
+				hx-target="this"
+				hx-push-url="false"
+			></span>
 		</button>
 		<button
 			class="articles-btn"
@@ -25,30 +35,45 @@ templ Index() {
 			Nació
 			<span
 				hx-get={ "/articles/nacio/new" + optionsNacio }
-				hx-trigger="load, click"
+				hx-trigger="load, nacio_settled from:body"
 				hx-swap="innerHTML"
 				hx-target="this"
+				hx-push-url="false"
 			></span>
 		</button>
 		<button
 			class="articles-btn"
-			hx-post="/articles/hn?limit=15"
+			hx-post={ "/articles/hn" + optionsHn }
 			hx-target="main"
 			hx-swap="innerHTML"
 			hx-indicator="#spinner_articles"
 			hx-push-url="true"
 		>
 			HN
+			<span
+				hx-get={ "/articles/hn/new" + optionsHn }
+				hx-trigger="load, hn_settled from:body"
+				hx-swap="innerHTML"
+				hx-target="this"
+				hx-push-url="false"
+			></span>
 		</button>
 		<button
 			class="articles-btn"
-			hx-post="/articles/theguardian?limit=15"
+			hx-post={ "/articles/theguardian" + optionsTheGuardian }
 			hx-target="main"
 			hx-swap="innerHTML"
 			hx-indicator="#spinner_articles"
 			hx-push-url="true"
 		>
 			The Guardian
+			<span
+				hx-get={ "/articles/theguardian/new" + optionsTheGuardian }
+				hx-trigger="load, the_guardian_settled from:body"
+				hx-swap="innerHTML"
+				hx-target="this"
+				hx-push-url="false"
+			></span>
 		</button>
 		<img id="spinner_articles" class="htmx-indicator" src="/static/spinner.svg" alt="Request in flight"/>
 		<main></main>

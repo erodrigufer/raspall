@@ -9,6 +9,9 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 const optionsNacio = "?limit=8"
+const optionsLobsters = ""
+const optionsHn = "?limit=15"
+const optionsTheGuardian = "?limit=15"
 
 func Index() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
@@ -43,16 +46,42 @@ func Index() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button class=\"articles-btn\" hx-post=\"/articles/lobsters\" hx-target=\"main\" hx-swap=\"innerHTML\" hx-indicator=\"#spinner_articles\" hx-push-url=\"true\">Lobsters</button> <button class=\"articles-btn\" hx-post=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button class=\"articles-btn\" hx-post=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var3 string
-			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs("/articles/nacio" + optionsNacio)
+			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs("/articles/lobsters" + optionsLobsters)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `Index.templ`, Line: 19, Col: 45}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `Index.templ`, Line: 12, Col: 51}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"main\" hx-swap=\"innerHTML\" hx-indicator=\"#spinner_articles\" hx-push-url=\"true\">Lobsters <span hx-get=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var4 string
+			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs("/articles/lobsters/new" + optionsLobsters)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `Index.templ`, Line: 20, Col: 55}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-trigger=\"load, lobsters_settled from:body\" hx-swap=\"innerHTML\" hx-target=\"this\" hx-push-url=\"false\"></span></button> <button class=\"articles-btn\" hx-post=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var5 string
+			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs("/articles/nacio" + optionsNacio)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `Index.templ`, Line: 29, Col: 45}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -60,16 +89,68 @@ func Index() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var4 string
-			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs("/articles/nacio/new" + optionsNacio)
+			var templ_7745c5c3_Var6 string
+			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs("/articles/nacio/new" + optionsNacio)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `Index.templ`, Line: 27, Col: 49}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `Index.templ`, Line: 37, Col: 49}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-trigger=\"load, click\" hx-swap=\"innerHTML\" hx-target=\"this\"></span></button> <button class=\"articles-btn\" hx-post=\"/articles/hn?limit=15\" hx-target=\"main\" hx-swap=\"innerHTML\" hx-indicator=\"#spinner_articles\" hx-push-url=\"true\">HN</button> <button class=\"articles-btn\" hx-post=\"/articles/theguardian?limit=15\" hx-target=\"main\" hx-swap=\"innerHTML\" hx-indicator=\"#spinner_articles\" hx-push-url=\"true\">The Guardian</button> <img id=\"spinner_articles\" class=\"htmx-indicator\" src=\"/static/spinner.svg\" alt=\"Request in flight\"><main></main>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-trigger=\"load, nacio_settled from:body\" hx-swap=\"innerHTML\" hx-target=\"this\" hx-push-url=\"false\"></span></button> <button class=\"articles-btn\" hx-post=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var7 string
+			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs("/articles/hn" + optionsHn)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `Index.templ`, Line: 46, Col: 39}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"main\" hx-swap=\"innerHTML\" hx-indicator=\"#spinner_articles\" hx-push-url=\"true\">HN <span hx-get=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var8 string
+			templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs("/articles/hn/new" + optionsHn)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `Index.templ`, Line: 54, Col: 43}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-trigger=\"load, hn_settled from:body\" hx-swap=\"innerHTML\" hx-target=\"this\" hx-push-url=\"false\"></span></button> <button class=\"articles-btn\" hx-post=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var9 string
+			templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs("/articles/theguardian" + optionsTheGuardian)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `Index.templ`, Line: 63, Col: 57}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"main\" hx-swap=\"innerHTML\" hx-indicator=\"#spinner_articles\" hx-push-url=\"true\">The Guardian <span hx-get=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var10 string
+			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs("/articles/theguardian/new" + optionsTheGuardian)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `Index.templ`, Line: 71, Col: 61}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-trigger=\"load, the_guardian_settled from:body\" hx-swap=\"innerHTML\" hx-target=\"this\" hx-push-url=\"false\"></span></button> <img id=\"spinner_articles\" class=\"htmx-indicator\" src=\"/static/spinner.svg\" alt=\"Request in flight\"><main></main>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

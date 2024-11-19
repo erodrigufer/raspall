@@ -69,7 +69,7 @@ func (app *Application) index() http.HandlerFunc {
 	}
 }
 
-func (app *Application) undeliveredTemplate(sourceName string, scraperFunc scraper.ScraperFunc) http.HandlerFunc {
+func (app *Application) undeliveredTemplate(sourceName string, scraperFunc scraper.ScraperFunc, eventName string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		options, err := getQueryOptions(r.URL.RawQuery)
 		if err != nil {
@@ -88,6 +88,9 @@ func (app *Application) undeliveredTemplate(sourceName string, scraperFunc scrap
 			}
 			app.cacheResponse(sourceName)
 		}
+		// Triggers an event after the swaps of this response settled, so that the status of
+		// the different sources gets triggered.
+		w.Header().Add("HX-Trigger-After-Settle", eventName)
 		err = hypermedia.RenderComponent(r.Context(), w, views.ArticleViewer(unreadArticles, sourceName))
 		if err != nil {
 			utils.HandleServerError(w, fmt.Errorf("unable to render templ component: %w", err), app.ErrorLog)
