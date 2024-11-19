@@ -151,4 +151,5 @@ form input {
 
 button.articles-btn {
   padding: 0px 0.4em 1px 0.4em;
+  min-width: 10em;
 }
