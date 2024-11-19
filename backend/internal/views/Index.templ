@@ -8,7 +8,7 @@ const optionsTheGuardian = "?limit=15"
 templ Index() {
 	@base() {
 		<button
-			class="articles-btn"
+			class="data-sources-btn"
 			hx-post={ "/articles/lobsters" + optionsLobsters }
 			hx-target="main"
 			hx-swap="innerHTML"
@@ -25,7 +25,7 @@ templ Index() {
 			></span>
 		</button>
 		<button
-			class="articles-btn"
+			class="data-sources-btn"
 			hx-post={ "/articles/nacio" + optionsNacio }
 			hx-target="main"
 			hx-swap="innerHTML"
@@ -42,7 +42,7 @@ templ Index() {
 			></span>
 		</button>
 		<button
-			class="articles-btn"
+			class="data-sources-btn"
 			hx-post={ "/articles/hn" + optionsHn }
 			hx-target="main"
 			hx-swap="innerHTML"
@@ -59,7 +59,7 @@ templ Index() {
 			></span>
 		</button>
 		<button
-			class="articles-btn"
+			class="data-sources-btn"
 			hx-post={ "/articles/theguardian" + optionsTheGuardian }
 			hx-target="main"
 			hx-swap="innerHTML"

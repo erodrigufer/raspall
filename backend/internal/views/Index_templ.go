@@ -46,7 +46,7 @@ func Index() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button class=\"articles-btn\" hx-post=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button class=\"data-sources-btn\" hx-post=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -72,7 +72,7 @@ func Index() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-trigger=\"load, lobsters_settled from:body\" hx-swap=\"innerHTML\" hx-target=\"this\" hx-push-url=\"false\"></span></button> <button class=\"articles-btn\" hx-post=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-trigger=\"load, lobsters_settled from:body\" hx-swap=\"innerHTML\" hx-target=\"this\" hx-push-url=\"false\"></span></button> <button class=\"data-sources-btn\" hx-post=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -98,7 +98,7 @@ func Index() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-trigger=\"load, nacio_settled from:body\" hx-swap=\"innerHTML\" hx-target=\"this\" hx-push-url=\"false\"></span></button> <button class=\"articles-btn\" hx-post=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-trigger=\"load, nacio_settled from:body\" hx-swap=\"innerHTML\" hx-target=\"this\" hx-push-url=\"false\"></span></button> <button class=\"data-sources-btn\" hx-post=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -124,7 +124,7 @@ func Index() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-trigger=\"load, hn_settled from:body\" hx-swap=\"innerHTML\" hx-target=\"this\" hx-push-url=\"false\"></span></button> <button class=\"articles-btn\" hx-post=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-trigger=\"load, hn_settled from:body\" hx-swap=\"innerHTML\" hx-target=\"this\" hx-push-url=\"false\"></span></button> <button class=\"data-sources-btn\" hx-post=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
