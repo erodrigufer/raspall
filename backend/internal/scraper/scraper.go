@@ -36,7 +36,7 @@ func scrape(_ context.Context, infoLog, errorLog *log.Logger, q collectorQuery) 
 		errorLog.Printf("An error occurred while scraping %s: %s", r.Request.URL, err)
 	})
 
-	articles := make([]Article, 0, 200)
+	articles := make([]Article, 0, 50)
 	collector.OnHTML(q.querySelector, q.queryCallbackFn(&articles))
 	collector.Visit(q.url)
 
