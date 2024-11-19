@@ -6,6 +6,7 @@
   --error-message-bg-color: hsl(0, 100%, 95%);
   --error-message-border-color: hsl(0, 100%, 80%);
   --table-header-bg-color: hsl(210, 40%, 48%);
+  --data-source-status-bg-color: hsl(210, 50%, 30%);
 }
 
 body {
@@ -153,4 +154,23 @@ form input {
 button.data-sources-btn {
   padding: 0.2em 0.4em 0.2em 0.4em;
   min-width: 10em;
+}
+
+span.data-source-status {
+  animation: fade-in-status 2s infinite;
+}
+
+@keyframes fade-in-status {
+  50% {
+    opacity: 0;
+  }
+}
+
+span.data-source-status::before {
+  border-radius: 1rem;
+  display: inline-block;
+  background-color: var(--data-source-status-bg-color);
+  width: 0.75em;
+  height: 0.75em;
+  content: "";
 }

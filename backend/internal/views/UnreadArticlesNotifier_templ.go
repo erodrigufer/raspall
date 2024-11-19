@@ -30,7 +30,7 @@ func UnreadArticlesNotifier(unreadArticlesPresent bool) templ.Component {
 		}
 		ctx = templ.ClearChildren(ctx)
 		if unreadArticlesPresent {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<span>⬩</span>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<span class=\"data-source-status\"></span>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
