@@ -69,105 +69,51 @@ func (app *Application) index() http.HandlerFunc {
 	}
 }
 
-func (app *Application) undeliveredNacio() http.HandlerFunc {
+func (app *Application) undeliveredTemplate(sourceName string, scraperFunc scraper.ScraperFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		options, err := getQueryOptions(r.URL.RawQuery)
 		if err != nil {
 			utils.HandleServerError(w, fmt.Errorf("error parsing URL query parameters: %w", err), app.ErrorLog)
 			return
 		}
-		articles := scraper.GetNacioArticles(r.Context(), app.InfoLog, app.ErrorLog)
-		articles = limit(options.limit, articles)
-		unreadArticles, err := getUndeliveredObjects(articles, app.cache)
-		if err != nil {
-			utils.HandleServerError(w, err, app.ErrorLog)
-			return
+		var unreadArticles []scraper.Article
+		cached := app.checkIfResponseCached(sourceName)
+		if !cached {
+			articles := scraperFunc(r.Context(), app.InfoLog, app.ErrorLog)
+			articles = limit(options.limit, articles)
+			unreadArticles, err = getUndeliveredObjects(articles, app.cache)
+			if err != nil {
+				utils.HandleServerError(w, err, app.ErrorLog)
+				return
+			}
+			app.cacheResponse(sourceName)
 		}
-		err = hypermedia.RenderComponent(r.Context(), w, views.ArticleViewer(unreadArticles, "Nació Digital"))
+		err = hypermedia.RenderComponent(r.Context(), w, views.ArticleViewer(unreadArticles, sourceName))
 		if err != nil {
 			utils.HandleServerError(w, fmt.Errorf("unable to render templ component: %w", err), app.ErrorLog)
 		}
 	}
 }
 
-func (app *Application) statusNacio() http.HandlerFunc {
+func (app *Application) statusTemplate(sourceName string, scraperFunc scraper.ScraperFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		options, err := getQueryOptions(r.URL.RawQuery)
 		if err != nil {
 			utils.HandleServerError(w, fmt.Errorf("error parsing URL query parameters: %w", err), app.ErrorLog)
 			return
 		}
-		articles := scraper.GetNacioArticles(r.Context(), app.InfoLog, app.ErrorLog)
-		articles = limit(options.limit, articles)
-		unreadArticlesPresent, err := checkIfUndeliveredObjectsPresent(articles, app.cache)
-		if err != nil {
-			utils.HandleServerError(w, err, app.ErrorLog)
-			return
+		var unreadArticlesPresent bool
+		cached := app.checkIfResponseCached(sourceName)
+		if !cached {
+			articles := scraperFunc(r.Context(), app.InfoLog, app.ErrorLog)
+			articles = limit(options.limit, articles)
+			unreadArticlesPresent, err = checkIfUndeliveredObjectsPresent(articles, app.cache)
+			if err != nil {
+				utils.HandleServerError(w, err, app.ErrorLog)
+				return
+			}
 		}
 		err = hypermedia.RenderComponent(r.Context(), w, views.UnreadArticlesNotifier(unreadArticlesPresent))
-		if err != nil {
-			utils.HandleServerError(w, fmt.Errorf("unable to render templ component: %w", err), app.ErrorLog)
-		}
-	}
-}
-
-func (app *Application) undeliveredLobsters() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		options, err := getQueryOptions(r.URL.RawQuery)
-		if err != nil {
-			utils.HandleServerError(w, fmt.Errorf("error parsing URL query parameters: %w", err), app.ErrorLog)
-			return
-		}
-		articles := scraper.GetLobstersArticles(r.Context(), app.InfoLog, app.ErrorLog)
-		articles = limit(options.limit, articles)
-		unreadArticles, err := getUndeliveredObjects(articles, app.cache)
-		if err != nil {
-			utils.HandleServerError(w, err, app.ErrorLog)
-			return
-		}
-		err = hypermedia.RenderComponent(r.Context(), w, views.ArticleViewer(unreadArticles, "Lobsters"))
-		if err != nil {
-			utils.HandleServerError(w, fmt.Errorf("unable to render templ component: %w", err), app.ErrorLog)
-		}
-	}
-}
-
-func (app *Application) undeliveredHn() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		options, err := getQueryOptions(r.URL.RawQuery)
-		if err != nil {
-			utils.HandleServerError(w, fmt.Errorf("error parsing URL query parameters: %w", err), app.ErrorLog)
-			return
-		}
-		articles := scraper.GetHackerNewsArticles(r.Context(), app.InfoLog, app.ErrorLog)
-		articles = limit(options.limit, articles)
-		unreadArticles, err := getUndeliveredObjects(articles, app.cache)
-		if err != nil {
-			utils.HandleServerError(w, err, app.ErrorLog)
-			return
-		}
-		err = hypermedia.RenderComponent(r.Context(), w, views.ArticleViewer(unreadArticles, "Hacker News"))
-		if err != nil {
-			utils.HandleServerError(w, fmt.Errorf("unable to render templ component: %w", err), app.ErrorLog)
-		}
-	}
-}
-
-func (app *Application) undeliveredTheGuardian() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		options, err := getQueryOptions(r.URL.RawQuery)
-		if err != nil {
-			utils.HandleServerError(w, fmt.Errorf("error parsing URL query parameters: %w", err), app.ErrorLog)
-			return
-		}
-		articles := scraper.GetTheGuardianArticles(r.Context(), app.InfoLog, app.ErrorLog)
-		articles = limit(options.limit, articles)
-		unreadArticles, err := getUndeliveredObjects(articles, app.cache)
-		if err != nil {
-			utils.HandleServerError(w, err, app.ErrorLog)
-			return
-		}
-		err = hypermedia.RenderComponent(r.Context(), w, views.ArticleViewer(unreadArticles, "The Guardian"))
 		if err != nil {
 			utils.HandleServerError(w, fmt.Errorf("unable to render templ component: %w", err), app.ErrorLog)
 		}

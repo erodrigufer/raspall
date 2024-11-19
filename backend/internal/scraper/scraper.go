@@ -9,6 +9,8 @@ import (
 	colly "github.com/gocolly/colly/v2"
 )
 
+type ScraperFunc func(context.Context, *log.Logger, *log.Logger) []Article
+
 type Article struct {
 	Title   string
 	Topics  []string

@@ -3,6 +3,7 @@ package server
 import (
 	"net/http"
 
+	"github.com/erodrigufer/raspall/internal/scraper"
 	m "github.com/erodrigufer/raspall/internal/server/middlewares"
 )
 
@@ -24,12 +25,15 @@ func (app *Application) routes() http.Handler {
 	mux.Handle("/", mws.Authenticate(mws.PrivateCacheControl(protectedMux)))
 
 	protectedMux.Handle("GET /", app.index())
-	protectedMux.Handle("POST /articles/nacio", app.undeliveredNacio())
-	protectedMux.Handle("POST /articles/hn", app.undeliveredHn())
-	protectedMux.Handle("POST /articles/lobsters", app.undeliveredLobsters())
-	protectedMux.Handle("POST /articles/theguardian", app.undeliveredTheGuardian())
+	protectedMux.Handle("POST /articles/nacio", app.undeliveredTemplate("Nació Digital", scraper.GetNacioArticles))
+	protectedMux.Handle("POST /articles/hn", app.undeliveredTemplate("Hacker News", scraper.GetHackerNewsArticles))
+	protectedMux.Handle("POST /articles/lobsters", app.undeliveredTemplate("Lobsters", scraper.GetLobstersArticles))
+	protectedMux.Handle("POST /articles/theguardian", app.undeliveredTemplate("The Guardian", scraper.GetTheGuardianArticles))
 
-	protectedMux.Handle("GET /articles/nacio/new", app.statusNacio())
+	protectedMux.Handle("GET /articles/nacio/new", app.statusTemplate("Nació Digital", scraper.GetNacioArticles))
+	protectedMux.Handle("GET /articles/hn/new", app.statusTemplate("Hacker News", scraper.GetHackerNewsArticles))
+	protectedMux.Handle("GET /articles/lobsters/new", app.statusTemplate("Lobsters", scraper.GetLobstersArticles))
+	protectedMux.Handle("GET /articles/theguardian/new", app.statusTemplate("The Guardian", scraper.GetTheGuardianArticles))
 
 	return globalMiddlewares(mux)
 }
