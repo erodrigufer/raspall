@@ -5,6 +5,7 @@
   --article-topic-badge-border-color: hsl(60, 60%, 59%);
   --error-message-bg-color: hsl(0, 100%, 95%);
   --error-message-border-color: hsl(0, 100%, 80%);
+  --table-header-bg-color: hsl(210, 40%, 48%);
 }
 
 body {
@@ -61,7 +62,7 @@ table tr:hover {
 }
 
 table th {
-  background-color: #567ca1;
+  background-color: var(--table-header-bg-color);
   color: #ffffff;
   text-align: center;
 }
