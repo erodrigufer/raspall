@@ -4,12 +4,10 @@ templ Login() {
 	@base() {
 		<form class="login" action="/login" method="POST">
 			<div class="box">
-				<label for="username">Username:</label>
-				<input type="text" id="username" name="username" required/>
+				<input type="text" id="username" placeholder="Username" name="username" required/>
 			</div>
 			<div class="box">
-				<label for="password">Password:</label>
-				<input type="password" id="password" name="password" required/>
+				<input type="password" id="password" placeholder="Password" name="password" required/>
 			</div>
 			<div class="box">
 				<button hx-post="/login" hx-target="body" hx-target-error="#auth-error" hx-swap="innerHTML" hx-push-url="true">
