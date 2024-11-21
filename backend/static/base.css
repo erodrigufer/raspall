@@ -1,12 +1,20 @@
 :root {
+  --main-bg-color: hsl(220, 24%, 10%);
   --anchor-color: hsl(210, 100%, 45%);
   --anchor-hover-color: hsl(210, 100%, 35%);
   --article-topic-badge-bg-color: hsl(56, 100%, 92%);
   --article-topic-badge-border-color: hsl(60, 60%, 59%);
-  --error-message-bg-color: hsl(0, 100%, 95%);
-  --error-message-border-color: hsl(0, 100%, 80%);
+  --error-message-bg-color: hsl(0, 100%, 80%);
+  --error-message-border-color: hsl(0, 100%, 60%);
   --table-header-bg-color: hsl(210, 40%, 48%);
   --data-source-status-bg-color: hsl(210, 50%, 30%);
+  --h1-color: hsl(220, 11%, 95%);
+  --input-placeholder-color: hsl(221, 13%, 59%);
+  --input-placeholder-focus-visible-color: hsl(221, 13%, 78%);
+  --input-bg-color: hsl(221, 22%, 14%);
+  --general-border-radius: 0.25rem;
+  --general-border-width: 0.0625rem;
+  --general-color: hsl(219, 13%, 79%);
 }
 
 body {
@@ -14,6 +22,9 @@ body {
   font-size: 12pt;
   line-height: 1.45em;
   margin: 0 auto;
+  background-color: var(--main-bg-color);
+  color: var(--general-color);
+  min-height: 100vh;
 }
 
 /*Only large viewports should restrict the max-width,*/
@@ -22,6 +33,10 @@ body {
   body {
     max-width: 50vw;
   }
+}
+
+h1 {
+  color: var(--h1-color);
 }
 
 a {
@@ -95,7 +110,8 @@ div.main-content {
 
 footer {
   text-align: center;
-  margin-top: 2em;
+  margin-top: 1.5em;
+  margin-bottom: 1em;
 }
 
 span.article-topic-badge {
@@ -109,9 +125,8 @@ span.article-topic-badge {
   white-space: nowrap;
 }
 
-.login {
+form.login {
   margin-top: 3em;
-  /*background-color: hsl(50, 10%, 58%);*/
 }
 
 p.error-response {
@@ -119,6 +134,7 @@ p.error-response {
   border-left: 4px solid var(--error-message-border-color);
   padding: 0.6em;
   margin: 2em auto 1em auto;
+  color: black;
 }
 
 @media (width >= 1200px) {
@@ -143,12 +159,67 @@ p.error-response {
 form input {
   margin-bottom: 1em;
   margin-left: 1.2em;
+  background-color: var(--input-bg-color);
+  border: var(--general-border-width) solid #2a3140;
+  border-radius: var(--general-border-radius);
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  color: var(--h1-color);
+  transition:
+    outline-width 0.5s 0s ease-in-out,
+    background-color 0.5s 0s ease-in-out;
+}
+
+form input:focus-visible {
+  outline: 2px solid var(--anchor-color);
+  border-radius: 3px;
+  background-color: transparent;
+}
+
+input::placeholder {
+  color: var(--input-placeholder-color);
+  opacity: 0.8;
+}
+
+input:focus-visible::placeholder {
+  opacity: 1;
+  color: var(--input-placeholder-focus-visible-color);
+}
+
+button {
+  cursor: pointer;
+}
+
+button.auth-btn {
+  min-width: 10em;
+  background-color: var(--anchor-hover-color);
+  border-radius: var(--general-border-radius);
+  border: var(--general-border-width) solid var(--anchor-hover-color);
+  color: var(--h1-color);
+  text-align: center;
+  text-decoration: none;
+  padding: 0.75rem 1rem;
+  transition:
+    background-color 0.5s 0s ease-in-out,
+    border 0.5s 0s ease-in-out;
+}
+
+button.auth-btn:hover {
+  background-color: var(--anchor-color);
+  border: var(--general-border-width) solid var(--anchor-color);
 }
 
 .box {
   display: flex;
   flex-direction: row;
   justify-content: center;
+}
+
+.footer-flex {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: inherit;
 }
 
 button.data-sources-btn {

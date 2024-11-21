@@ -10,7 +10,14 @@ templ Login() {
 				<input type="password" id="password" placeholder="Password" name="password" required/>
 			</div>
 			<div class="box">
-				<button hx-post="/login" hx-target="body" hx-target-error="#auth-error" hx-swap="innerHTML" hx-push-url="true">
+				<button
+					class="auth-btn login-btn"
+					hx-post="/login"
+					hx-target="body"
+					hx-target-error="#auth-error"
+					hx-swap="innerHTML"
+					hx-push-url="true"
+				>
 					Login
 				</button>
 			</div>
