@@ -15,6 +15,10 @@
   --general-border-radius: 0.25rem;
   --general-border-width: 0.0625rem;
   --general-color: hsl(219, 13%, 79%);
+  --tr-odd-bg-color: hsl(217, 23%, 11%);
+  --tr-even-bg-color: hsl(220, 24%, 10%);
+  --tr-hover-bg-color: hsl(0, 0%, 88%);
+  --tr-border-color: hsl(220, 22%, 16%);
 }
 
 body {
@@ -54,51 +58,38 @@ table {
   margin-top: 1em;
 }
 
-table th,
 table td {
-  padding: 10px;
+  padding: 0.7rem;
+  padding-left: 1em;
   text-align: left;
+  border-bottom: 0.06rem solid var(--tr-border-color);
 }
 
 table tr {
-  border-radius: 10px;
   overflow: hidden;
-  background-color: #f9f9f9;
+  background-color: var(--tr-odd-bg-color);
   transition: background-color 0.3s ease;
 }
 
+tr a {
+  color: var(--general-color);
+}
+
 table tr:nth-child(even) {
-  background-color: #f1f1f1;
+  background-color: var(--tr-even-bg-color);
 }
 
 table tr:hover {
-  background-color: #e0e0e0;
+  background-color: var(--tr-border-color);
 }
 
 table th {
-  background-color: var(--table-header-bg-color);
-  color: #ffffff;
+  background-color: var(--tr-even-bg-color);
+  padding: 0.7rem;
+  font-size: 1.4rem;
+  color: var(--general-color);
   text-align: center;
-}
-
-table th:first-child {
-  border-top-left-radius: 10px;
-}
-
-table th:last-child {
-  border-top-right-radius: 10px;
-}
-
-table tr:last-child td:first-child {
-  border-bottom-left-radius: 10px;
-}
-
-table tr:last-child td:last-child {
-  border-bottom-right-radius: 10px;
-}
-
-table td {
-  padding-left: 1em;
+  border-bottom: 0.19rem solid var(--tr-border-color);
 }
 
 div.main-content {
