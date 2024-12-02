@@ -3,13 +3,13 @@ package views
 templ Login() {
 	@base() {
 		<form class="login" action="/login" method="POST">
-			<div class="box">
+			<div class="box-flex-row-center">
 				<input type="text" id="username" placeholder="Username" name="username" autofocus required/>
 			</div>
-			<div class="box">
+			<div class="box-flex-row-center">
 				<input type="password" id="password" placeholder="Password" name="password" required/>
 			</div>
-			<div class="box">
+			<div class="box-flex-row-center">
 				<button
 					class="auth-btn login-btn"
 					hx-post="/login"

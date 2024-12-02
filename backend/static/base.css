@@ -209,7 +209,7 @@ button.auth-btn:hover {
   border: var(--general-border-width) solid var(--anchor-color);
 }
 
-.box {
+.box-flex-row-center {
   display: flex;
   flex-direction: row;
   justify-content: center;
