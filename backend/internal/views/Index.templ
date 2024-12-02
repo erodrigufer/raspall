@@ -8,6 +8,14 @@ const optionsTheGuardian = "?limit=15"
 templ Index() {
 	@base() {
 		<button
+			class="auth-btn logout-btn"
+			hx-boost="false"
+			hx-post="/logout"
+			hx-push-url="true"
+			hx-swap="innerHTML"
+			hx-target="body"
+		>Logout</button>
+		<button
 			class="data-sources-btn"
 			hx-post={ "/articles/lobsters" + optionsLobsters }
 			hx-target="main"
