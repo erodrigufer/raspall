@@ -14,10 +14,15 @@
   --general-border-radius: 0.25rem;
   --general-border-width: 0.0625rem;
   --general-color: hsl(219, 13%, 79%);
+  --general-hover-color: hsl(219, 13%, 88%);
   --tr-odd-bg-color: hsl(217, 23%, 11%);
   --tr-even-bg-color: hsl(220, 24%, 10%);
   --tr-hover-bg-color: hsl(0, 0%, 88%);
   --tr-border-color: hsl(220, 22%, 16%);
+  --data-sources-btn-bg-color: hsl(217, 23%, 16%);
+  --data-sources-btn-border-color: hsl(220, 22%, 16%);
+  --data-sources-btn-hover-bg-color: hsl(217, 23%, 25%);
+  --data-sources-btn-hover-border-color: hsl(217, 23%, 35%);
 }
 
 body {
@@ -211,8 +216,25 @@ button.auth-btn:hover {
 }
 
 button.data-sources-btn {
-  padding: 0.2em 0.4em 0.2em 0.4em;
+  margin-top: 0.2rem;
+  padding: 0.75rem 1rem;
   min-width: 10em;
+  background-color: var(--data-sources-btn-bg-color);
+  color: var(--general-color);
+  border-radius: var(--general-border-radius);
+  border: var(--general-border-width) solid var(--data-sources-btn-border-color);
+  text-align: center;
+  text-decoration: none;
+  transition:
+    background-color 0.5s 0s ease-in-out,
+    border 0.5s 0s ease-in-out,
+    color 0.5s 0s ease-in-out;
+}
+
+button.data-sources-btn:hover {
+  background-color: var(--data-sources-btn-hover-bg-color);
+  border-color: var(--data-sources-btn-hover-border-color);
+  color: var(--general-hover-color);
 }
 
 span.data-source-status {
