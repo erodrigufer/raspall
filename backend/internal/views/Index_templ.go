@@ -124,33 +124,7 @@ func Index() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-trigger=\"load, hn_settled from:body\" hx-swap=\"innerHTML\" hx-target=\"this\" hx-push-url=\"false\"></span></button> <button class=\"data-sources-btn\" hx-post=\"")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			var templ_7745c5c3_Var9 string
-			templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs("/articles/theguardian" + optionsTheGuardian)
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `Index.templ`, Line: 71, Col: 57}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"main\" hx-swap=\"innerHTML\" hx-indicator=\"#spinner_articles\" hx-push-url=\"true\">The Guardian <span hx-get=\"")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			var templ_7745c5c3_Var10 string
-			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs("/articles/theguardian/new" + optionsTheGuardian)
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `Index.templ`, Line: 79, Col: 61}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-trigger=\"load, the_guardian_settled from:body\" hx-swap=\"innerHTML\" hx-target=\"this\" hx-push-url=\"false\"></span></button> <img id=\"spinner_articles\" class=\"htmx-indicator\" src=\"/static/spinner.svg\" alt=\"Request in flight\"><main></main>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-trigger=\"load, hn_settled from:body\" hx-swap=\"innerHTML\" hx-target=\"this\" hx-push-url=\"false\"></span></button> <img id=\"spinner_articles\" class=\"htmx-indicator\" src=\"/static/spinner.svg\" alt=\"Request in flight\"><main></main>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

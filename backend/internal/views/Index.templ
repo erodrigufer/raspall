@@ -66,23 +66,6 @@ templ Index() {
 				hx-push-url="false"
 			></span>
 		</button>
-		<button
-			class="data-sources-btn"
-			hx-post={ "/articles/theguardian" + optionsTheGuardian }
-			hx-target="main"
-			hx-swap="innerHTML"
-			hx-indicator="#spinner_articles"
-			hx-push-url="true"
-		>
-			The Guardian
-			<span
-				hx-get={ "/articles/theguardian/new" + optionsTheGuardian }
-				hx-trigger="load, the_guardian_settled from:body"
-				hx-swap="innerHTML"
-				hx-target="this"
-				hx-push-url="false"
-			></span>
-		</button>
 		<img id="spinner_articles" class="htmx-indicator" src="/static/spinner.svg" alt="Request in flight"/>
 		<main></main>
 	}
