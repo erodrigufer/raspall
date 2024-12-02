@@ -25,12 +25,10 @@ body {
   background-color: var(--main-bg-color);
   color: var(--general-color);
   min-height: 100vh;
-}
 
-/*Only large viewports should restrict the max-width,*/
-/*otherwise mobile is not wide enough!*/
-@media (width >= 1200px) {
-  body {
+  /*Only large viewports should restrict the max-width,*/
+  /*otherwise mobile is not wide enough!*/
+  @media (width >= 1200px) {
     max-width: 50vw;
   }
 }
