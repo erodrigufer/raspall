@@ -14,7 +14,7 @@
   --general-border-radius: 0.25rem;
   --general-border-width: 0.0625rem;
   --general-color: hsl(219, 13%, 79%);
-  --general-hover-color: hsl(219, 13%, 88%);
+  --general-hover-color: hsl(219, 13%, 95%);
   --tr-odd-bg-color: hsl(217, 23%, 11%);
   --tr-even-bg-color: hsl(220, 24%, 10%);
   --tr-hover-bg-color: hsl(0, 0%, 88%);
@@ -22,7 +22,7 @@
   --data-sources-btn-bg-color: hsl(217, 23%, 16%);
   --data-sources-btn-border-color: hsl(220, 22%, 16%);
   --data-sources-btn-hover-bg-color: hsl(217, 23%, 25%);
-  --data-sources-btn-hover-border-color: hsl(217, 23%, 35%);
+  --data-sources-btn-hover-border-color: var(--data-sources-btn-border-color);
 }
 
 body {
