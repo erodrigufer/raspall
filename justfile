@@ -9,6 +9,7 @@ BUILD_HASH_COMMIT := ` \
     echo "$(git log -1 --pretty=%h)"; \
   fi`
 
+# List available just targets.
 default:
   @just --list
 
@@ -42,10 +43,12 @@ test:
 templ:
   templ generate -path ./backend/internal/views
 
+# Build Mac OS Docker image.
 [group('docker')]
 build-mac:
 	cd backend && docker build . --build-arg BUILD_HASH_COMMIT={{ BUILD_HASH_COMMIT }} --tag {{ IMAGE_NAME }}
 
+# Build Linux Docker image.
 [group('docker')]
 build-linux:
 	cd backend && docker build . --platform linux/amd64 --build-arg BUILD_HASH_COMMIT={{ BUILD_HASH_COMMIT }} --tag ${DOCKER_REPO}
