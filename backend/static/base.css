@@ -1,9 +1,9 @@
 :root {
   --main-bg-color: hsl(220, 24%, 10%);
   --primary-blue: hsl(210, 100%, 45%);
-  --primary-blue-hover: hsl(210, 100%, 35%);
+  --primary-blue-10: hsl(210, 100%, 35%);
   --anchor-color: var(--primary-blue);
-  --anchor-hover-color: var(--primary-blue-hover);
+  --anchor-hover-color: var(--primary-blue-10);
   --article-topic-badge-bg-color: hsl(56, 100%, 92%);
   --article-topic-badge-border-color: hsl(60, 60%, 59%);
   --error-message-bg-color: hsl(0, 100%, 80%);
@@ -25,6 +25,8 @@
   --data-sources-btn-hover-bg-color: hsl(217, 23%, 25%);
   --data-sources-btn-hover-border-color: var(--data-sources-btn-border-color);
   --data-source-status-bg-color: var(--primary-blue);
+  --auth-btn-bg-color: var(--primary-blue-10);
+  --auth-btn-hover-bg-color: var(--primary-blue);
 }
 
 body {
@@ -187,7 +189,7 @@ button {
 
 button.auth-btn {
   min-width: 10em;
-  background-color: var(--anchor-hover-color);
+  background-color: var(--auth-btn-bg-color);
   border-radius: var(--general-border-radius);
   border: var(--general-border-width) solid var(--anchor-hover-color);
   color: var(--h1-color);
@@ -200,7 +202,7 @@ button.auth-btn {
 }
 
 button.auth-btn:hover {
-  background-color: var(--anchor-color);
+  background-color: var(--auth-btn-hover-bg-color);
   border: var(--general-border-width) solid var(--anchor-color);
 }
 
