@@ -34,7 +34,7 @@ func base() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!doctype html><html lang=\"en\"><meta name=\"description\" content=\"Raspall - content consumption management system\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><meta name=\"theme-color\" content=\"#470DAC\"><link rel=\"stylesheet\" href=\"/static/base.css\"><title>Raspall</title><script src=\"https://unpkg.com/htmx.org@2.0.3\"></script><script src=\"https://unpkg.com/htmx-ext-response-targets@2.0.0/response-targets.js\"></script></head><div class=\"footer-flex\"><body hx-ext=\"response-targets\"><div class=\"main-content\"><h1>Raspall </h1><h3>oriental central:&nbsp&nbsp<i>/rəsˈpaʎ/</i></h3>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!doctype html><html lang=\"en\"><meta name=\"description\" content=\"Raspall - content consumption management system\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><meta name=\"theme-color\" content=\"#470DAC\"><link rel=\"stylesheet\" href=\"/static/base.css\"><link rel=\"stylesheet\" href=\"/static/spinner.css\"><title>Raspall</title><script src=\"https://unpkg.com/htmx.org@2.0.3\"></script><script src=\"https://unpkg.com/htmx-ext-response-targets@2.0.0/response-targets.js\"></script></head><div class=\"footer-flex\"><body hx-ext=\"response-targets\"><div class=\"main-content\"><h1>Raspall </h1><h3>oriental central:&nbsp&nbsp<i>/rəsˈpaʎ/</i></h3>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -50,7 +50,7 @@ func base() templ.Component {
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(
 			strconv.Itoa(time.Now().Year()))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `base.templ`, Line: 31, Col: 35}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `base.templ`, Line: 32, Col: 35}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
