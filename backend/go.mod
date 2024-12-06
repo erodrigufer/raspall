@@ -4,6 +4,7 @@ go 1.23.2
 
 require (
 	github.com/a-h/templ v0.2.793
+	github.com/alexedwards/scs/v2 v2.8.0
 	github.com/gocolly/colly/v2 v2.1.0
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/rs/cors v1.11.0
@@ -11,7 +12,6 @@ require (
 
 require (
 	github.com/PuerkitoBio/goquery v1.9.1 // indirect
-	github.com/alexedwards/scs/v2 v2.8.0 // indirect
 	github.com/andybalholm/cascadia v1.3.2 // indirect
 	github.com/antchfx/htmlquery v1.3.1 // indirect
 	github.com/antchfx/xmlquery v1.4.0 // indirect
