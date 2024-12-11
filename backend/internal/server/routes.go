@@ -10,7 +10,7 @@ import (
 func (app *Application) routes() http.Handler {
 	mws := m.NewMiddlewares(app.InfoLog, app.ErrorLog, app.sessionManager)
 
-	globalMiddlewares := m.MiddlewareChain(app.sessionManager.LoadAndSave, mws.AddBuildHashCommitHeader, mws.LogRequest, mws.Cors, mws.RecoverPanic)
+	globalMiddlewares := m.MiddlewareChain(app.sessionManager.LoadAndSave, mws.AddBuildHashCommitHeader, mws.LogRequest, mws.RecoverPanic)
 
 	fileServer := http.StripPrefix("/static", http.FileServer(http.Dir("./static")))
 
