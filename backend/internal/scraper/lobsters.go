@@ -33,5 +33,8 @@ func scrapeLobsters(ctx context.Context, infoLog, errorLog *log.Logger) []Articl
 
 func GetLobstersArticles(ctx context.Context, infoLog, errorLog *log.Logger) []Article {
 	articles := scrapeLobsters(ctx, infoLog, errorLog)
+
+	undesiredTopics := []string{"rust", "graphics", "math", "science", "slides", "apl", "c", "c++", "dotnet", "fortran", "java", "haskell", "kotlin", "ml", "objectivec", "php", "python", "swift", "windows", "retrocomputing"}
+	articles = filterByTopicsStrict(articles, undesiredTopics)
 	return articles
 }

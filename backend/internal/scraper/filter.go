@@ -2,6 +2,7 @@ package scraper
 
 import (
 	"net/url"
+	"slices"
 	"strings"
 )
 
@@ -49,6 +50,27 @@ func filterByTopics(articles []Article, undesiredTopics []string) []Article {
 		}
 	}
 	return output
+}
+
+func filterByTopicsStrict(articles []Article, undesiredTopics []string) []Article {
+	output := make([]Article, 0, 100)
+
+	for _, article := range articles {
+		if article.containsUndesiredTopic(undesiredTopics) {
+			continue
+		}
+		output = append(output, article)
+	}
+	return output
+}
+
+func (article Article) containsUndesiredTopic(undesiredTopics []string) bool {
+	for _, undesiredTopic := range undesiredTopics {
+		if slices.Contains(article.Topics, undesiredTopic) {
+			return true
+		}
+	}
+	return false
 }
 
 func filterByUrlHostName(articles []Article, undesiredHostNames []string) []Article {
