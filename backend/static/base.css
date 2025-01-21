@@ -113,6 +113,7 @@ footer {
 
 span.article-topic-badge {
   background-color: var(--article-topic-badge-bg-color);
+  color: black;
   border: 1px solid var(--article-topic-badge-border-color);
   border-radius: 5px;
   margin-left: 0.25em;
