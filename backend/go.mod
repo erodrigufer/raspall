@@ -7,7 +7,6 @@ require (
 	github.com/alexedwards/scs/v2 v2.8.0
 	github.com/gocolly/colly/v2 v2.1.0
 	github.com/patrickmn/go-cache v2.1.0+incompatible
-	github.com/rs/cors v1.11.0
 )
 
 require (
