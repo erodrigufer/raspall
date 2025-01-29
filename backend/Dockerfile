@@ -29,7 +29,7 @@ RUN --mount=type=cache,target=/go/pkg/mod/ \
 FROM alpine:3.20 AS final
 
 ARG BUILD_HASH_COMMIT
-ENV BUILD_HASH_COMMIT $BUILD_HASH_COMMIT
+ENV BUILD_HASH_COMMIT=$BUILD_HASH_COMMIT
 
 # Install any runtime dependencies that are needed to run your application.
 # Leverage a cache mount to /var/cache/apk/ to speed up subsequent builds.
