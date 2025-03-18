@@ -7,6 +7,8 @@ import (
 	colly "github.com/gocolly/colly/v2"
 )
 
+const HN_URL = "https://news.ycombinator.com/"
+
 func scrapeHackerNews(ctx context.Context, infoLog, errorLog *log.Logger) []Article {
 	f := func(art *[]Article) colly.HTMLCallback {
 		return func(element *colly.HTMLElement) {
@@ -22,12 +24,13 @@ func scrapeHackerNews(ctx context.Context, infoLog, errorLog *log.Logger) []Arti
 	}
 
 	q := collectorQuery{
-		url:             "https://news.ycombinator.com/",
+		url:             HN_URL,
 		querySelector:   "span.titleline",
 		queryCallbackFn: f,
 	}
 
 	articles := scrape(ctx, infoLog, errorLog, q)
+	articles = fixMissingHostname(HN_URL, articles)
 
 	return articles
 }

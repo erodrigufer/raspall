@@ -7,6 +7,8 @@ import (
 	colly "github.com/gocolly/colly/v2"
 )
 
+const LOBSTERS_URL = "https://lobste.rs/"
+
 func scrapeLobsters(ctx context.Context, infoLog, errorLog *log.Logger) []Article {
 	f := func(art *[]Article) colly.HTMLCallback {
 		return func(element *colly.HTMLElement) {
@@ -21,12 +23,13 @@ func scrapeLobsters(ctx context.Context, infoLog, errorLog *log.Logger) []Articl
 	}
 
 	q := collectorQuery{
-		url:             "https://lobste.rs/",
+		url:             LOBSTERS_URL,
 		querySelector:   "div.details",
 		queryCallbackFn: f,
 	}
 
 	articles := scrape(ctx, infoLog, errorLog, q)
+	articles = fixMissingHostname(LOBSTERS_URL, articles)
 
 	return articles
 }

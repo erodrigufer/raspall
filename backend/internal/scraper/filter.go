@@ -97,3 +97,41 @@ func filterByUrlHostName(articles []Article, undesiredHostNames []string) []Arti
 	}
 	return output
 }
+
+// isRelativeURL returns true if domain does not have a hostname defined.
+func isRelativeURL(urlStr string) bool {
+	parsedURL, err := url.Parse(urlStr)
+	if err != nil {
+		return false
+	}
+
+	return parsedURL.Hostname() == ""
+}
+
+func addSiteDomainIfRelativeURL(siteDomain, urlInput string) string {
+	if isRelativeURL(urlInput) {
+		parsedURL, err := url.Parse(urlInput)
+		if err != nil {
+			return ""
+		}
+		parsedDomain, err := url.Parse(siteDomain)
+		if err != nil {
+			return ""
+		}
+		parsedURL.Host = parsedDomain.Hostname()
+		parsedURL.Scheme = parsedDomain.Scheme
+		return parsedURL.String()
+	}
+	return urlInput
+}
+
+// fixMissingHostname adds the hostname of the siteDomain to all articles
+// that only have a relative URL.
+func fixMissingHostname(siteDomain string, articles []Article) []Article {
+	fixedArticles := make([]Article, 0, len(articles))
+	for _, article := range articles {
+		article.URL = addSiteDomainIfRelativeURL(siteDomain, article.URL)
+		fixedArticles = append(fixedArticles, article)
+	}
+	return fixedArticles
+}
