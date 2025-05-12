@@ -1,4 +1,4 @@
-set shell := ["/bin/zsh", "-c"]
+set shell := ["/bin/sh", "-c"]
 
 IMAGE_NAME := 'raspall'
 CONTAINER_NAME := 'raspall'
