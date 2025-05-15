@@ -44,12 +44,17 @@ func NewAPI(ctx context.Context) (*Application, error) {
 		return nil, fmt.Errorf("AUTH_PASSWORD env var is missing")
 	}
 
+	port, ok := os.LookupEnv("PORT")
+	if !ok {
+		return nil, fmt.Errorf("PORT env var is missing")
+	}
+
 	app.sessionManager = scs.New()
 	app.sessionManager.Lifetime = 7 * 24 * time.Hour
 	app.sessionManager.IdleTimeout = 7 * 24 * time.Hour
 
 	app.srv = &http.Server{
-		Addr:     ":80",
+		Addr:     port,
 		ErrorLog: app.ErrorLog,
 		Handler:  app.routes(),
 		// Time after which inactive keep-alive connections will be closed.
