@@ -43,6 +43,12 @@ test:
 templ:
   templ generate -path ./backend/internal/views
 
+# build for deployment.
+[group('deployment')]
+build-deployment:
+  rm -rf ./build
+  cd backend && env GOOS=freebsd GOARCH=amd64 go build -o ../build/raspall ./cmd/raspall
+
 # Build Mac OS Docker image.
 [group('docker')]
 build-mac:
