@@ -3,7 +3,7 @@ module github.com/erodrigufer/raspall
 go 1.23.2
 
 require (
-	github.com/a-h/templ v0.2.793
+	github.com/a-h/templ v0.3.865
 	github.com/alexedwards/scs/v2 v2.8.0
 	github.com/gocolly/colly/v2 v2.1.0
 	github.com/patrickmn/go-cache v2.1.0+incompatible
@@ -21,9 +21,8 @@ require (
 	github.com/kennygrant/sanitize v1.2.4 // indirect
 	github.com/saintfish/chardet v0.0.0-20230101081208-5e3ef4b5456d // indirect
 	github.com/temoto/robotstxt v1.1.2 // indirect
-	golang.org/x/net v0.36.0 // indirect
-	golang.org/x/text v0.22.0 // indirect
+	golang.org/x/net v0.39.0 // indirect
+	golang.org/x/text v0.24.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
 	google.golang.org/protobuf v1.33.0 // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
