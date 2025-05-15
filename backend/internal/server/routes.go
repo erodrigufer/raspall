@@ -5,6 +5,7 @@ import (
 
 	"github.com/erodrigufer/raspall/internal/scraper"
 	m "github.com/erodrigufer/raspall/internal/server/middlewares"
+	"github.com/erodrigufer/raspall/internal/static"
 )
 
 func (app *Application) routes() http.Handler {
@@ -12,13 +13,13 @@ func (app *Application) routes() http.Handler {
 
 	globalMiddlewares := m.MiddlewareChain(app.sessionManager.LoadAndSave, mws.AddBuildHashCommitHeader, mws.LogRequest, mws.RecoverPanic)
 
-	fileServer := http.StripPrefix("/static", http.FileServer(http.Dir("./static")))
+	fileServer := http.FileServer(http.FS(static.STATIC_CONTENT))
 
 	mux := http.NewServeMux()
 	mux.Handle("GET /login", mws.AuthenticateLogin(app.getLogin()))
 	mux.Handle("POST /login", app.postLogin())
 	mux.Handle("POST /logout", app.postLogout())
-	mux.Handle("GET /static/", mws.PublicCacheCacheControl(fileServer))
+	mux.Handle("GET /content/", mws.PublicCacheCacheControl(fileServer))
 	mux.Handle("GET /api/health", app.health())
 
 	protectedMux := http.NewServeMux()
