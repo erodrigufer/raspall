@@ -25,7 +25,7 @@ vet:
 
 # go build.
 [group('go')]
-build: vet test
+build: vet test templ
   cd backend && go build -o ./build/raspall ./cmd/raspall
 
 # run binary
@@ -45,7 +45,7 @@ templ:
 
 # build for deployment.
 [group('deployment')]
-build-deployment:
+build-deployment: vet templ
   rm -rf ./build
   cd backend && env GOOS=freebsd GOARCH=amd64 go build -o ../build/raspall ./cmd/raspall
 
