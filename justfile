@@ -49,6 +49,13 @@ build-deployment: vet templ
   rm -rf ./build
   cd backend && env GOOS=freebsd GOARCH=amd64 go build -o ../build/raspall ./cmd/raspall
 
+# deploy.
+[group('deployment')]
+deploy: build-deployment
+  @ssh -i ${DEPLOY_KEY} ${DEPLOY_USER}@${DEPLOY_HOST} service raspall stop
+  @scp -i ${DEPLOY_KEY} ./build/raspall ${DEPLOY_USER}@${DEPLOY_HOST}:/usr/local/bin/raspall
+  @ssh -i ${DEPLOY_KEY} ${DEPLOY_USER}@${DEPLOY_HOST} service raspall start
+
 # Build Mac OS Docker image.
 [group('docker')]
 build-mac:
