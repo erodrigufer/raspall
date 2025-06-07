@@ -41,7 +41,7 @@ test:
 # generate templ files.
 [group('go')]
 templ:
-  templ generate -path ./backend/internal/views
+  cd backend && go tool templ generate -path ./internal/views
 
 # build for deployment.
 [group('deployment')]
