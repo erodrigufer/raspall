@@ -1,0 +1,29 @@
+#!/bin/sh 
+
+# PROVIDE: raspall
+# REQUIRE: LOGIN
+# KEYWORD: shutdown
+#
+# Add the following lines to /etc/rc.conf to enable raspall:
+#
+# raspall_enable="YES"
+#
+#
+
+. /etc/rc.subr 
+name="raspall" 
+rcvar=${name}_enable
+
+pidfile="/var/run/${name}.pid"
+raspall_env_file="/root/.${name}.env"
+raspall_command="/usr/local/bin/${name}"
+
+required_files="/usr/local/bin/${name} ${raspall_env_file}" 
+
+sig_stop="TERM"
+
+command="/usr/sbin/daemon"
+command_args="--close-fds --restart --user ${name} --supervisor-pidfile ${pidfile} --output-file /var/log/${name} ${raspall_command}"
+
+load_rc_config $name
+run_rc_command "$1"
