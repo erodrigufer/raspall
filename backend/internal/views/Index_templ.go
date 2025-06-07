@@ -8,7 +8,7 @@ package views
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-const optionsNacio = "?limit=8"
+const optionsNacio = "?limit=10"
 const optionsLobsters = ""
 const optionsHn = "?limit=15"
 const optionsTheGuardian = "?limit=15"
