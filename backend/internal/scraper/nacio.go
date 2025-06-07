@@ -2,37 +2,31 @@ package scraper
 
 import (
 	"context"
+	"html"
 	"log"
 
-	colly "github.com/gocolly/colly/v2"
+	"github.com/mmcdole/gofeed"
 )
 
+const nacioDigitalrssFeed = "https://naciodigital.cat/rss"
+
 func scrapeNacioDigital(ctx context.Context, infoLog, errorLog *log.Logger) []Article {
-	f := func(art *[]Article) colly.HTMLCallback {
-		return func(element *colly.HTMLElement) {
-			title := element.ChildText("h2 > a")
-			url := element.ChildAttr("h2 > a", "href")
-			topic := element.ChildText("div.m-category")
-
-			topics := make([]string, 0, 3)
-			if title != "" && url != "" {
-				if topic != "" {
-					topics = append(topics, topic)
-				}
-				article := Article{Title: title, URL: url, Topics: topics}
-				*art = append(*art, article)
-			}
+	infoLog.Printf("Visiting: %s", nacioDigitalrssFeed)
+	fp := gofeed.NewParser()
+	feed, err := fp.ParseURLWithContext(nacioDigitalrssFeed, ctx)
+	if err != nil {
+		errorLog.Printf("an error occurred while scraping naciodigital: %s", err.Error())
+		return []Article{}
+	}
+	articles := make([]Article, 0)
+	for _, item := range feed.Items {
+		title := html.UnescapeString(item.Title)
+		article := Article{
+			Title: title,
+			URL:   item.Link,
 		}
+		articles = append(articles, article)
 	}
-
-	q := collectorQuery{
-		url:             "https://www.naciodigital.cat/",
-		querySelector:   "article",
-		queryCallbackFn: f,
-	}
-
-	articles := scrape(ctx, infoLog, errorLog, q)
-
 	return articles
 }
 
