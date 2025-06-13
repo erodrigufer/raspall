@@ -15,7 +15,7 @@ name="raspall"
 rcvar=${name}_enable
 
 pidfile="/var/run/${name}.pid"
-raspall_env_file="/root/.${name}.env"
+raspall_env_file="/usr/local/share/env/.${name}.env"
 raspall_command="/usr/local/bin/${name}"
 
 required_files="/usr/local/bin/${name} ${raspall_env_file}" 
