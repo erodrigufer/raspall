@@ -189,7 +189,6 @@ button {
 }
 
 button.auth-btn {
-  min-width: 10em;
   background-color: var(--auth-btn-bg-color);
   border-radius: var(--general-border-radius);
   border: var(--general-border-width) solid var(--anchor-hover-color);
@@ -223,7 +222,6 @@ button.auth-btn:hover {
 button.data-sources-btn {
   margin-top: 0.2rem;
   padding: 0.75rem 1rem;
-  min-width: 10em;
   background-color: var(--data-sources-btn-bg-color);
   color: var(--general-color);
   border-radius: var(--general-border-radius);
