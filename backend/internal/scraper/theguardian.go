@@ -2,35 +2,33 @@ package scraper
 
 import (
 	"context"
-	"fmt"
+	"html"
 	"log"
 
-	colly "github.com/gocolly/colly/v2"
+	"github.com/mmcdole/gofeed"
 )
 
+const theGuardianRSSFeed = "https://theguardian.com/europe/rss"
+
 func scrapeTheGuardian(ctx context.Context, infoLog, errorLog *log.Logger) []Article {
-	f := func(art *[]Article) colly.HTMLCallback {
-		return func(element *colly.HTMLElement) {
-			title := element.ChildAttr("a.dcr-lv2v9o", "aria-label")
-			url := element.ChildAttr("a.dcr-lv2v9o", "href")
-			// URLs are relative paths in the webpage.
-			url = fmt.Sprintf("https://www.theguardian.com%s", url)
-
-			if title != "" && url != "" {
-				article := Article{Title: title, URL: url}
-				*art = append(*art, article)
-			}
+	infoLog.Printf("Visiting: %s", theGuardianRSSFeed)
+	fp := gofeed.NewParser()
+	feed, err := fp.ParseURLWithContext(theGuardianRSSFeed, ctx)
+	if err != nil {
+		errorLog.Printf("an error occurred while scraping The Guardian: %s", err.Error())
+		return []Article{}
+	}
+	articles := make([]Article, 0)
+	for _, item := range feed.Items {
+		title := html.UnescapeString(item.Title)
+		article := Article{
+			Title:  title,
+			URL:    item.Link,
+			Topics: item.Categories[:1],
 		}
+
+		articles = append(articles, article)
 	}
-
-	q := collectorQuery{
-		url:             "https://www.theguardian.com/europe",
-		querySelector:   "div.dcr-f9aim1",
-		queryCallbackFn: f,
-	}
-
-	articles := scrape(ctx, infoLog, errorLog, q)
-
 	return articles
 }
 
