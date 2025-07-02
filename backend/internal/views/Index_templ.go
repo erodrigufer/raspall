@@ -8,10 +8,10 @@ package views
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-const optionsNacio = "?limit=10"
+const optionsNacio = "?limit=12"
 const optionsLobsters = ""
-const optionsHn = "?limit=15"
-const optionsTheGuardian = "?limit=15"
+const optionsHn = "?limit=10"
+const optionsTheGuardian = "?limit=12"
 
 func flexNavbar() templ.CSSClass {
 	templ_7745c5c3_CSSBuilder := templruntime.GetBuilder()
