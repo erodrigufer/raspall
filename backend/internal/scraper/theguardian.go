@@ -21,10 +21,14 @@ func scrapeTheGuardian(ctx context.Context, infoLog, errorLog *log.Logger) []Art
 	articles := make([]Article, 0)
 	for _, item := range feed.Items {
 		title := html.UnescapeString(item.Title)
+		topics := make([]string, 0)
+		if len(item.Categories) >= 1 {
+			topics = append(topics, item.Categories[0])
+		}
 		article := Article{
 			Title:  title,
 			URL:    item.Link,
-			Topics: item.Categories[:1],
+			Topics: topics,
 		}
 
 		articles = append(articles, article)
