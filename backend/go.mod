@@ -4,7 +4,7 @@ go 1.23.2
 
 require (
 	github.com/a-h/templ v0.3.906
-	github.com/alexedwards/scs/v2 v2.8.0
+	github.com/alexedwards/scs/v2 v2.9.0
 	github.com/gocolly/colly/v2 v2.2.0
 	github.com/mmcdole/gofeed v1.3.0
 	github.com/patrickmn/go-cache v2.1.0+incompatible
