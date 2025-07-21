@@ -26,6 +26,7 @@ type Application struct {
 	sessionManager     *scs.SessionManager
 	authorizedUsername string
 	authorizedPassword string
+	df                 dailyFrequency
 }
 
 func NewAPI(ctx context.Context) (*Application, error) {
@@ -52,6 +53,12 @@ func NewAPI(ctx context.Context) (*Application, error) {
 	app.sessionManager = scs.New()
 	app.sessionManager.Lifetime = 15 * 24 * time.Hour
 	app.sessionManager.IdleTimeout = 15 * 24 * time.Hour
+
+	allowedVisitFreq, err := time.ParseDuration("5h")
+	if err != nil {
+		return nil, fmt.Errorf("unable to parse allowedVisitFreq: %w", err)
+	}
+	app.df.allowedFrequency = allowedVisitFreq
 
 	app.srv = &http.Server{
 		Addr:     port,

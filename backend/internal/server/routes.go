@@ -25,7 +25,7 @@ func (app *Application) routes() http.Handler {
 	protectedMux := http.NewServeMux()
 	mux.Handle("/", mws.Authenticate(mws.PrivateCacheControl(protectedMux)))
 
-	protectedMux.Handle("GET /", app.index())
+	protectedMux.Handle("GET /", app.dailyVisitingFrequency(app.index()))
 	protectedMux.Handle("POST /articles/nacio", app.undeliveredTemplate("Nació Digital", scraper.GetNacioArticles, "nacio_settled"))
 	protectedMux.Handle("POST /articles/hn", app.undeliveredTemplate("Hacker News", scraper.GetHackerNewsArticles, "hn_settled"))
 	protectedMux.Handle("POST /articles/lobsters", app.undeliveredTemplate("Lobsters", scraper.GetLobstersArticles, "lobsters_settled"))

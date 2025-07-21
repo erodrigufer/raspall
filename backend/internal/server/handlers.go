@@ -3,6 +3,7 @@ package server
 import (
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/erodrigufer/raspall/internal/hypermedia"
 	"github.com/erodrigufer/raspall/internal/scraper"
@@ -62,11 +63,17 @@ func (app *Application) postLogout() http.HandlerFunc {
 
 func (app *Application) index() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		err := hypermedia.RenderComponent(r.Context(), w, views.Index())
+		err := hypermedia.RenderComponent(r.Context(), w, views.Index(app.df.currentlyBlocked, app.formatUnblockTime()))
 		if err != nil {
 			utils.HandleServerError(w, fmt.Errorf("unable to render templ component: %w", err), app.ErrorLog)
 		}
 	}
+}
+
+func (app *Application) formatUnblockTime() string {
+	unblockedTime := app.df.lastVisit.Add(app.df.allowedFrequency)
+	unblockedTimeFormatted := unblockedTime.Format("15:04 MST -- 02 Jan 2006")
+	return unblockedTimeFormatted
 }
 
 func (app *Application) undeliveredTemplate(sourceName string, scraperFunc scraper.ScraperFunc, eventName string) http.HandlerFunc {
@@ -133,4 +140,25 @@ func (app *Application) health() http.HandlerFunc {
 			utils.HandleServerError(w, err, app.ErrorLog)
 		}
 	}
+}
+
+type dailyFrequency struct {
+	lastVisit        time.Time
+	currentlyBlocked bool
+	allowedFrequency time.Duration
+}
+
+func (app *Application) dailyVisitingFrequency(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		now := time.Now()
+		lastVisit := app.df.lastVisit
+		elapsedTime := lastVisit.Add(app.df.allowedFrequency)
+		if elapsedTime.After(now) {
+			app.df.currentlyBlocked = true
+		} else {
+			app.df.currentlyBlocked = false
+			app.df.lastVisit = now
+		}
+		next.ServeHTTP(w, r)
+	})
 }
