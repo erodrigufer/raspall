@@ -3,9 +3,9 @@ package middlewares
 import (
 	"log/slog"
 	"net/http"
-	"strings"
 	"time"
 
+	"github.com/erodrigufer/raspall/internal/utils"
 	"github.com/urfave/negroni"
 )
 
@@ -21,14 +21,7 @@ func (m *Middlewares) LogRequest(next http.Handler) http.Handler {
 
 		next.ServeHTTP(negroniRW, r)
 
-		var ipReqChain string
-		forwardedHeader := r.Header.Values("X-Forwarded-For")
-		if len(forwardedHeader) > 0 {
-			ipReqChain = strings.Join(forwardedHeader, ", ")
-		} else {
-			ipReqChain = r.RemoteAddr
-		}
-
+		ipReqChain := utils.GetClientIP(r)
 		reqDuration := time.Since(startTime).Milliseconds()
 		m.infoLog.Info("received HTTP request",
 			slog.String("method", r.Method),
