@@ -9,14 +9,14 @@ import (
 )
 
 func (app *Application) routes() http.Handler {
-	mws := m.NewMiddlewares(app.InfoLog, app.ErrorLog, app.sessionManager)
+	mws := m.NewMiddlewares(app.InfoLog, app.ErrorLog, app.sessionManager, false)
 
 	globalMiddlewares := m.MiddlewareChain(app.sessionManager.LoadAndSave, mws.AddBuildHashCommitHeader, mws.LogRequest, mws.RecoverPanic)
 
 	fileServer := http.FileServer(http.FS(static.STATIC_CONTENT))
 
 	mux := http.NewServeMux()
-	mux.Handle("GET /login", mws.AuthenticateLogin(app.getLogin()))
+	mux.Handle("GET /login", mws.Authenticate(app.getLogin()))
 	mux.Handle("POST /login", app.postLogin())
 	mux.Handle("POST /logout", app.postLogout())
 	mux.Handle("GET /content/", mws.PublicCacheCacheControl(fileServer))
