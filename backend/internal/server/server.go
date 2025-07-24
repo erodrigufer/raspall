@@ -22,11 +22,12 @@ type Application struct {
 	// cache is a key-value store to manage
 	// the news that have already been delivered
 	// to the user.
-	cache              *cache.Cache
-	sessionManager     *scs.SessionManager
-	authorizedUsername string
-	authorizedPassword string
-	df                 dailyFrequency
+	cache                 *cache.Cache
+	sessionManager        *scs.SessionManager
+	disableAuthentication bool
+	authorizedUsername    string
+	authorizedPassword    string
+	df                    dailyFrequency
 }
 
 func NewAPI(ctx context.Context) (*Application, error) {
@@ -50,6 +51,17 @@ func NewAPI(ctx context.Context) (*Application, error) {
 		return nil, fmt.Errorf("PORT env var is missing")
 	}
 
+	disableAuthStr, ok := os.LookupEnv("DISABLE_AUTH")
+	if !ok {
+		app.disableAuthentication = false
+	}
+	if disableAuthStr == "true" {
+		app.disableAuthentication = true
+	} else {
+		app.disableAuthentication = false
+	}
+	app.InfoLog.Info("configuring authentication environment", slog.Bool("DISABLE_AUTH", app.disableAuthentication))
+
 	app.sessionManager = scs.New()
 	app.sessionManager.Lifetime = 15 * 24 * time.Hour
 	app.sessionManager.IdleTimeout = 15 * 24 * time.Hour
@@ -63,10 +75,15 @@ func NewAPI(ctx context.Context) (*Application, error) {
 	// http.Server can only handle loggers from the old log package.
 	compatibleLogger := slog.NewLogLogger(slog.NewJSONHandler(os.Stderr, nil), slog.LevelError)
 
+	endpoints, err := app.defineEndpoints()
+	if err != nil {
+		return nil, fmt.Errorf("unable to define endpoints: %w", err)
+	}
+
 	app.srv = &http.Server{
 		Addr:     port,
 		ErrorLog: compatibleLogger,
-		Handler:  app.routes(),
+		Handler:  endpoints,
 		// Time after which inactive keep-alive connections will be closed.
 		IdleTimeout: time.Minute,
 		// Max. time to read the header and body of a request in the server.
@@ -88,7 +105,7 @@ func NewAPI(ctx context.Context) (*Application, error) {
 // closing client connections.
 func (app *Application) StartServerWithGracefulShutdown(ctx context.Context) {
 	go func() {
-		app.InfoLog.Info("Starting raspall server", slog.String("server_address", app.srv.Addr))
+		app.InfoLog.Info("starting raspall server", slog.String("server_address", app.srv.Addr))
 
 		// Run server.
 		if err := app.srv.ListenAndServe(); err != nil {

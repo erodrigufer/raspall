@@ -8,4 +8,5 @@ Centralized news scraper
 export AUTH_USERNAME="<your_username>"
 export AUTH_PASSWORD="<your_password>"
 export PORT="localhost:8080"
+export DISABLE_AUTH="false"
 ```

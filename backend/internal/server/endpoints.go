@@ -8,8 +8,8 @@ import (
 	"github.com/erodrigufer/raspall/internal/static"
 )
 
-func (app *Application) routes() http.Handler {
-	mws := m.NewMiddlewares(app.InfoLog, app.ErrorLog, app.sessionManager, false)
+func (app *Application) defineEndpoints() (http.Handler, error) {
+	mws := m.NewMiddlewares(app.InfoLog, app.ErrorLog, app.sessionManager, app.disableAuthentication)
 
 	globalMiddlewares := m.MiddlewareChain(app.sessionManager.LoadAndSave, mws.AddBuildHashCommitHeader, mws.LogRequest, mws.RecoverPanic)
 
@@ -36,5 +36,5 @@ func (app *Application) routes() http.Handler {
 	protectedMux.Handle("GET /articles/lobsters/new", app.statusTemplate("Lobsters", scraper.GetLobstersArticles))
 	protectedMux.Handle("GET /articles/theguardian/new", app.statusTemplate("The Guardian", scraper.GetTheGuardianArticles))
 
-	return globalMiddlewares(mux)
+	return globalMiddlewares(mux), nil
 }
