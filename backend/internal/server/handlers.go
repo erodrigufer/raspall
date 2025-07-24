@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"log/slog"
 	"net/http"
 	"time"
 
@@ -22,6 +23,7 @@ func (app *Application) getLogin() http.HandlerFunc {
 
 func (app *Application) postLogin() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		ipReqChain := utils.GetClientIP(r)
 		err := r.ParseForm()
 		if err != nil {
 			utils.SendErrorMessage(w, http.StatusBadRequest, app.ErrorLog, fmt.Sprintf("Bad request: %s", err.Error()))
@@ -32,6 +34,7 @@ func (app *Application) postLogin() http.HandlerFunc {
 		password := r.PostForm.Get("password")
 
 		if username != app.authorizedUsername || password != app.authorizedPassword {
+			app.InfoLog.Info("unauthorized login attempt", slog.String("username", username), slog.String("password", password), slog.String("ip_request_chain", ipReqChain))
 			utils.SendErrorMessage(w, http.StatusUnauthorized, app.ErrorLog, `<p class="error-response"><b>Username</b> and/or <b>password</b> are invalid.</p>`)
 			return
 		}
@@ -46,6 +49,7 @@ func (app *Application) postLogin() http.HandlerFunc {
 		// Make the privilege-level change.
 		app.sessionManager.Put(r.Context(), "userID", username)
 
+		app.InfoLog.Info("successful login attempt", slog.String("username", username), slog.String("ip_request_chain", ipReqChain))
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 	}
 }
