@@ -52,9 +52,9 @@ build-deployment: vet templ
 # deploy.
 [group('deployment')]
 deploy: build-deployment
-  @ssh ${DEPLOY_USER}@${DEPLOY_HOST} service raspall stop
-  @scp ./build/raspall ${DEPLOY_USER}@${DEPLOY_HOST}:/usr/local/bin/raspall
-  @ssh ${DEPLOY_USER}@${DEPLOY_HOST} service raspall start
+  @ssh ${DEPLOY_HOST} service raspall stop
+  @scp ./build/raspall ${DEPLOY_HOST}:/usr/local/bin/raspall
+  @ssh ${DEPLOY_HOST} service raspall start
 
 # Build Mac OS Docker image.
 [group('docker')]
