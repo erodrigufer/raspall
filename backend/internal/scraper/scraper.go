@@ -4,12 +4,12 @@ import (
 	"context"
 	"crypto/sha1"
 	"fmt"
-	"log"
+	"log/slog"
 
 	colly "github.com/gocolly/colly/v2"
 )
 
-type ScraperFunc func(context.Context, *log.Logger, *log.Logger) []Article
+type ScraperFunc func(context.Context, *slog.Logger, *slog.Logger) []Article
 
 type Article struct {
 	Title   string
@@ -24,16 +24,16 @@ type collectorQuery struct {
 	queryCallbackFn func(*[]Article) colly.HTMLCallback
 }
 
-func scrape(_ context.Context, infoLog, errorLog *log.Logger, q collectorQuery) []Article {
+func scrape(_ context.Context, infoLog, errorLog *slog.Logger, q collectorQuery) []Article {
 	// TODO: Handle a cancellation of the context.
 
 	collector := colly.NewCollector()
 
 	collector.OnRequest(func(r *colly.Request) {
-		infoLog.Printf("Visiting: %s", r.URL)
+		infoLog.Info("a website is being scraped", slog.String("url", r.URL.String()))
 	})
 	collector.OnError(func(r *colly.Response, err error) {
-		errorLog.Printf("An error occurred while scraping %s: %s", r.Request.URL, err)
+		errorLog.Error("an error occurred while scraping", slog.String("url", r.Request.URL.String()), slog.String("error_message", err.Error()))
 	})
 
 	articles := make([]Article, 0, 50)

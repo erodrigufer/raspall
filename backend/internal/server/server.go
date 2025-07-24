@@ -3,7 +3,7 @@ package server
 import (
 	"context"
 	"fmt"
-	"log"
+	"log/slog"
 	"net/http"
 	"os"
 	"sync"
@@ -16,9 +16,9 @@ import (
 type Application struct {
 	srv *http.Server
 	// ErrorLog logs server errors.
-	ErrorLog *log.Logger
+	ErrorLog *slog.Logger
 	// InfoLog informative server logger.
-	InfoLog *log.Logger
+	InfoLog *slog.Logger
 	// cache is a key-value store to manage
 	// the news that have already been delivered
 	// to the user.
@@ -32,8 +32,8 @@ type Application struct {
 func NewAPI(ctx context.Context) (*Application, error) {
 	app := new(Application)
 
-	app.InfoLog = log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
-	app.ErrorLog = log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+	app.InfoLog = slog.New(slog.NewJSONHandler(os.Stdout, nil))
+	app.ErrorLog = slog.New(slog.NewJSONHandler(os.Stderr, nil))
 
 	var ok bool
 	app.authorizedUsername, ok = os.LookupEnv("AUTH_USERNAME")
@@ -60,9 +60,12 @@ func NewAPI(ctx context.Context) (*Application, error) {
 	}
 	app.df.allowedFrequency = allowedVisitFreq
 
+	// http.Server can only handle loggers from the old log package.
+	compatibleLogger := slog.NewLogLogger(slog.NewJSONHandler(os.Stderr, nil), slog.LevelError)
+
 	app.srv = &http.Server{
 		Addr:     port,
-		ErrorLog: app.ErrorLog,
+		ErrorLog: compatibleLogger,
 		Handler:  app.routes(),
 		// Time after which inactive keep-alive connections will be closed.
 		IdleTimeout: time.Minute,
@@ -85,17 +88,17 @@ func NewAPI(ctx context.Context) (*Application, error) {
 // closing client connections.
 func (app *Application) StartServerWithGracefulShutdown(ctx context.Context) {
 	go func() {
-		app.InfoLog.Printf("Starting raspall server at %s", app.srv.Addr)
+		app.InfoLog.Info("Starting raspall server", slog.String("server_address", app.srv.Addr))
 
 		// Run server.
 		if err := app.srv.ListenAndServe(); err != nil {
 			// Error returned when server is closed, not actually an error, log to
 			// info log.
 			if err == http.ErrServerClosed {
-				app.InfoLog.Print(err)
+				app.InfoLog.Info("server closed")
 				// An actual error happened, log to error log.
 			} else {
-				app.ErrorLog.Printf("an error occured while executing ListenAndServe(): %v", err)
+				app.ErrorLog.Error("an error occured while executing ListenAndServe()", slog.String("error_message", err.Error()))
 			}
 		}
 	}()
@@ -116,7 +119,7 @@ func (app *Application) StartServerWithGracefulShutdown(ctx context.Context) {
 		// Received an interrupt signal, shutdown.
 		if err := app.srv.Shutdown(shutdownCtx); err != nil {
 			// Error from closing listeners, or context timeout.
-			app.ErrorLog.Printf("Server is not shutting down! Reason: %s", err.Error())
+			app.ErrorLog.Error("server is not shutting down", slog.String("error_message", err.Error()))
 			// An error happened while gracefully shutting down, close abruptly.
 			app.srv.Close()
 		}

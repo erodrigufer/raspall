@@ -3,19 +3,19 @@ package scraper
 import (
 	"context"
 	"html"
-	"log"
+	"log/slog"
 
 	"github.com/mmcdole/gofeed"
 )
 
 const theGuardianRSSFeed = "https://theguardian.com/europe/rss"
 
-func scrapeTheGuardian(ctx context.Context, infoLog, errorLog *log.Logger) []Article {
-	infoLog.Printf("Visiting: %s", theGuardianRSSFeed)
+func scrapeTheGuardian(ctx context.Context, infoLog, errorLog *slog.Logger) []Article {
+	infoLog.Info("an RSS feed is being scraped", slog.String("url", theGuardianRSSFeed))
 	fp := gofeed.NewParser()
 	feed, err := fp.ParseURLWithContext(theGuardianRSSFeed, ctx)
 	if err != nil {
-		errorLog.Printf("an error occurred while scraping The Guardian: %s", err.Error())
+		errorLog.Error("an error occurred while scraping", slog.String("url", theGuardianRSSFeed), slog.String("error_message", err.Error()))
 		return []Article{}
 	}
 	articles := make([]Article, 0)
@@ -36,7 +36,7 @@ func scrapeTheGuardian(ctx context.Context, infoLog, errorLog *log.Logger) []Art
 	return articles
 }
 
-func GetTheGuardianArticles(ctx context.Context, infoLog, errorLog *log.Logger) []Article {
+func GetTheGuardianArticles(ctx context.Context, infoLog, errorLog *slog.Logger) []Article {
 	articles := scrapeTheGuardian(ctx, infoLog, errorLog)
 
 	undesiredTopics := []string{"Trump", "Musk", "Gaza", "Israel", "Lebanon", "Starmer"}

@@ -8,6 +8,7 @@ require (
 	github.com/gocolly/colly/v2 v2.2.0
 	github.com/mmcdole/gofeed v1.3.0
 	github.com/patrickmn/go-cache v2.1.0+incompatible
+	github.com/urfave/negroni v1.0.0
 )
 
 require (

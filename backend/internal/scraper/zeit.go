@@ -2,13 +2,12 @@ package scraper
 
 import (
 	"context"
-	"log"
+	"log/slog"
 
 	colly "github.com/gocolly/colly/v2"
 )
 
-func scrapeZeit(ctx context.Context, infoLog, errorLog *log.Logger) []Article {
-
+func scrapeZeit(ctx context.Context, infoLog, errorLog *slog.Logger) []Article {
 	f := func(art *[]Article) colly.HTMLCallback {
 		return func(element *colly.HTMLElement) {
 			title := element.ChildText("span.zon-teaser__title")
@@ -23,7 +22,6 @@ func scrapeZeit(ctx context.Context, infoLog, errorLog *log.Logger) []Article {
 				article := Article{Title: title, URL: url, Paywall: paywall}
 				*art = append(*art, article)
 			}
-
 		}
 	}
 
@@ -38,7 +36,7 @@ func scrapeZeit(ctx context.Context, infoLog, errorLog *log.Logger) []Article {
 	return articles
 }
 
-func GetZeitArticles(ctx context.Context, infoLog, errorLog *log.Logger, removePaywall bool) []Article {
+func GetZeitArticles(ctx context.Context, infoLog, errorLog *slog.Logger, removePaywall bool) []Article {
 	articles := scrapeZeit(ctx, infoLog, errorLog)
 	articles = filterByPaywall(articles, removePaywall)
 	articles = filterByUrlHostName(articles, []string{"premium.zeit.de", "verlag.zeit.de", "sudoku.zeit.de", "spiele.zeit.de", "wiwo.de", "freundederzeit.typeform.com", "zeitakademie.de"})

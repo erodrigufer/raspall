@@ -2,14 +2,14 @@ package scraper
 
 import (
 	"context"
-	"log"
+	"log/slog"
 
 	colly "github.com/gocolly/colly/v2"
 )
 
 const HN_URL = "https://news.ycombinator.com/"
 
-func scrapeHackerNews(ctx context.Context, infoLog, errorLog *log.Logger) []Article {
+func scrapeHackerNews(ctx context.Context, infoLog, errorLog *slog.Logger) []Article {
 	f := func(art *[]Article) colly.HTMLCallback {
 		return func(element *colly.HTMLElement) {
 			titleTexts := element.ChildTexts("a")
@@ -35,7 +35,7 @@ func scrapeHackerNews(ctx context.Context, infoLog, errorLog *log.Logger) []Arti
 	return articles
 }
 
-func GetHackerNewsArticles(ctx context.Context, infoLog, errorLog *log.Logger) []Article {
+func GetHackerNewsArticles(ctx context.Context, infoLog, errorLog *slog.Logger) []Article {
 	articles := scrapeHackerNews(ctx, infoLog, errorLog)
 
 	undesiredTopics := []string{"hiring"}

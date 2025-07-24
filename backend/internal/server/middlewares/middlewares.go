@@ -1,7 +1,7 @@
 package middlewares
 
 import (
-	"log"
+	"log/slog"
 	"net/http"
 
 	"github.com/alexedwards/scs/v2"
@@ -10,14 +10,14 @@ import (
 type middleware func(http.Handler) http.Handler
 
 type Middlewares struct {
-	infoLog        *log.Logger
-	errorLog       *log.Logger
+	infoLog        *slog.Logger
+	errorLog       *slog.Logger
 	sessionManager *scs.SessionManager
 }
 
 // NewMiddlewares creates a struct that contains all middlewares of the application.
 // It injects all required dependencies for the middlewares.
-func NewMiddlewares(infoLog, errorLog *log.Logger, sessionManager *scs.SessionManager) *Middlewares {
+func NewMiddlewares(infoLog, errorLog *slog.Logger, sessionManager *scs.SessionManager) *Middlewares {
 	middlewares := new(Middlewares)
 	middlewares.infoLog = infoLog
 	middlewares.errorLog = errorLog

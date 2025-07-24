@@ -2,14 +2,14 @@ package scraper
 
 import (
 	"context"
-	"log"
+	"log/slog"
 
 	colly "github.com/gocolly/colly/v2"
 )
 
 const LOBSTERS_URL = "https://lobste.rs/"
 
-func scrapeLobsters(ctx context.Context, infoLog, errorLog *log.Logger) []Article {
+func scrapeLobsters(ctx context.Context, infoLog, errorLog *slog.Logger) []Article {
 	f := func(art *[]Article) colly.HTMLCallback {
 		return func(element *colly.HTMLElement) {
 			title := element.ChildText("span.link > a")
@@ -34,7 +34,7 @@ func scrapeLobsters(ctx context.Context, infoLog, errorLog *log.Logger) []Articl
 	return articles
 }
 
-func GetLobstersArticles(ctx context.Context, infoLog, errorLog *log.Logger) []Article {
+func GetLobstersArticles(ctx context.Context, infoLog, errorLog *slog.Logger) []Article {
 	articles := scrapeLobsters(ctx, infoLog, errorLog)
 
 	undesiredTopics := []string{"rust", "graphics", "math", "science", "slides", "apl", "c", "c++", "dotnet", "fortran", "java", "haskell", "kotlin", "ml", "objectivec", "php", "python", "swift", "windows", "retrocomputing"}

@@ -3,7 +3,7 @@ package utils
 import (
 	"encoding/json"
 	"fmt"
-	"log"
+	"log/slog"
 	"net/http"
 	"runtime/debug"
 	"strconv"
@@ -38,9 +38,9 @@ func SendJSONResponse(w http.ResponseWriter, statusCode int, v any) error {
 
 // HandleServerError sends an error message and stack trace to the error logger and
 // then sends a generic 500 Internal Server Error response to the client.
-func HandleServerError(w http.ResponseWriter, err error, errorLogger *log.Logger) {
+func HandleServerError(w http.ResponseWriter, err error, errorLogger *slog.Logger) {
 	trace := fmt.Sprintf("%s\n%s", err.Error(), debug.Stack())
-	_ = errorLogger.Output(2, trace)
+	errorLogger.Error("an error happened", slog.String("trace", trace))
 
 	sendError(w, http.StatusInternalServerError)
 }
@@ -72,7 +72,7 @@ func newErrorMessageBody(code, message, details string) errorMessageBody {
 	return body
 }
 
-func SendErrorMessage(w http.ResponseWriter, statusCode int, errorLogger *log.Logger, errorMessage string) {
+func SendErrorMessage(w http.ResponseWriter, statusCode int, errorLogger *slog.Logger, errorMessage string) {
 	h := w.Header()
 	h.Set("Content-Type", "text/html; charset=utf-8")
 	w.WriteHeader(statusCode)
