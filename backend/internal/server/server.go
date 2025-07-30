@@ -65,6 +65,7 @@ func NewAPI(ctx context.Context) (*Application, error) {
 	app.sessionManager = scs.New()
 	app.sessionManager.Lifetime = 15 * 24 * time.Hour
 	app.sessionManager.IdleTimeout = 15 * 24 * time.Hour
+	app.sessionManager.Cookie.SameSite = http.SameSiteStrictMode // prevent CSRF attacks.
 
 	allowedVisitFreq, err := time.ParseDuration("5h")
 	if err != nil {
